@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FF5214EF</color>
+    <color name="colorPrimaryDark">#27057b</color>
+    <color name="colorAccent">#c200dc</color>
+
+    <color name="scrollbar">#494d48</color>
+
+
+
+
+
+    <color name="bg">#14b5ef</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffff</color>
+
+</resources>

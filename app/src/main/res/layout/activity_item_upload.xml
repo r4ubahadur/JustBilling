@@ -1,0 +1,1079 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:focusableInTouchMode="true"
+    tools:context=".ItemUploadActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/itemUploadToolbar"
+        android:theme="@style/ItemUploadToolBar"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/uploadDetails"
+        android:layout_below="@+id/itemUploadToolbar"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:background="#9b9bd1"
+            android:orientation="vertical"
+            android:weightSum="1"
+            android:layout_marginTop="?actionBarSize"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:background="#b78b8b8b"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_weight=".35"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_height="0dp">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <ImageView
+                        android:id="@+id/image_view"
+                        android:layout_width="match_parent"
+                        android:scaleType="centerInside"
+                        android:layout_height="match_parent"
+                        android:maxHeight="500dp"
+                        android:maxWidth="500dp"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:contentDescription="@string/todo" />
+
+                </LinearLayout>
+
+                </ScrollView>
+
+                <ImageView
+                    android:id="@+id/addImage"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:src="@android:drawable/ic_menu_camera" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:background="#ffffff"
+                android:layout_width="match_parent"
+                android:layout_weight=".65"
+                android:layout_height="0dp">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_margin="10dp"
+                        android:layout_height="wrap_content">
+
+
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/nameDetails"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:weightSum="1"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_weight=".3"
+                                android:layout_width="0dp"
+                                android:gravity="center_vertical"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:text="Name"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/black"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".5"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content">
+
+                                <EditText
+                                    android:id="@+id/itemName"
+                                    android:hint="Product Name"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/nameClear"
+                                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                                <Spinner
+                                    android:visibility="gone"
+                                    android:id="@+id/nameSpinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                </Spinner>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/nameAddItem"
+                                    android:src="@android:drawable/ic_menu_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_margin="3dp"
+                                    android:onClick="onUpdate"
+                                    android:layout_height="match_parent" />
+
+                            </LinearLayout>
+
+
+
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/brandName"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:weightSum="1"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_weight=".3"
+                                android:layout_width="0dp"
+                                android:gravity="center_vertical"
+                                android:layout_height="match_parent">
+
+
+                                <TextView
+                                    android:text="Brand Name"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/black"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".5"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content">
+
+                                <EditText
+                                    android:id="@+id/itemBrand"
+                                    android:hint="Brand Name"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <Spinner
+                                    android:id="@+id/brandSpinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                </Spinner>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/brandAddItem"
+                                    android:src="@android:drawable/ic_menu_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_margin="3dp"
+                                    android:onClick="onUpdate"
+                                    android:layout_height="match_parent" />
+
+                            </LinearLayout>
+
+
+
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/catDetails"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:weightSum="1"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_weight=".3"
+                                android:layout_width="0dp"
+                                android:gravity="center_vertical"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:text="Category"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/black"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".5"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content">
+
+                                <EditText
+                                    android:id="@+id/itemCat"
+                                    android:hint="Category"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <Spinner
+                                    android:id="@+id/catSpinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                </Spinner>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/catAddItem"
+                                    android:src="@android:drawable/ic_menu_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_margin="3dp"
+                                    android:onClick="onUpdate"
+                                    android:layout_height="match_parent" />
+
+                            </LinearLayout>
+
+
+
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/countDetails"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:weightSum="1"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_weight=".3"
+                                android:layout_width="0dp"
+                                android:gravity="center_vertical"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:text="Count"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/black"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".5"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content">
+
+                                <EditText
+                                    android:id="@+id/itemCount2"
+                                    android:hint="Count"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <Spinner
+                                    android:id="@+id/countSpinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                </Spinner>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/countAddItem"
+                                    android:src="@android:drawable/ic_menu_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_margin="3dp"
+                                    android:onClick="onUpdate"
+                                    android:layout_height="match_parent" />
+
+                            </LinearLayout>
+
+
+
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/colorDetails"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:weightSum="1"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_weight=".3"
+                                android:layout_width="0dp"
+                                android:gravity="center_vertical"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:text="Color"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/black"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".5"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content">
+
+                                <EditText
+                                    android:id="@+id/itemColor"
+                                    android:hint="Color"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <Spinner
+                                    android:id="@+id/colorSpinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                </Spinner>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/colorAddItem"
+                                    android:src="@android:drawable/ic_menu_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_margin="3dp"
+                                    android:onClick="onUpdate"
+                                    android:layout_height="match_parent" />
+
+                            </LinearLayout>
+
+
+
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/sizeDetails"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:weightSum="1"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_weight=".3"
+                                android:layout_width="0dp"
+                                android:gravity="center_vertical"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:text="Size"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/black"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".5"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content">
+
+                                <EditText
+                                    android:id="@+id/itemSize"
+                                    android:hint="Size"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <Spinner
+                                    android:id="@+id/sizeSpinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                </Spinner>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/sizeAddItem"
+                                    android:src="@android:drawable/ic_menu_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_margin="3dp"
+                                    android:onClick="onUpdate"
+                                    android:layout_height="match_parent" />
+
+                            </LinearLayout>
+
+
+
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/priceDetails"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:weightSum="1"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_weight=".3"
+                                android:layout_width="0dp"
+                                android:gravity="center_vertical"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:text="Price"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/black"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".5"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content">
+
+                                <EditText
+                                    android:id="@+id/itemPrice"
+                                    android:hint="Product Price"
+                                    android:layout_marginStart="2dp"
+                                    android:inputType="numberDecimal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/priceClear"
+                                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                                <Spinner
+                                    android:visibility="gone"
+                                    android:id="@+id/priceSpinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                </Spinner>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/priceAddItem"
+                                    android:src="@android:drawable/ic_menu_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_margin="3dp"
+                                    android:onClick="onUpdate"
+                                    android:layout_height="match_parent" />
+
+                            </LinearLayout>
+
+
+
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/exDateDetails"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:weightSum="1"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_weight=".3"
+                                android:layout_width="0dp"
+                                android:gravity="center_vertical"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:text="Expiry Gate"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/black"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".5"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content">
+
+                                <EditText
+                                    android:id="@+id/itemExpiry"
+                                    android:hint="01/05/2050"
+                                    android:onClick="setDate"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <Spinner
+                                    android:id="@+id/exSpinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                </Spinner>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/exAddItem"
+                                    android:src="@android:drawable/ic_menu_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_margin="3dp"
+                                    android:onClick="onUpdate"
+                                    android:layout_height="match_parent" />
+
+                            </LinearLayout>
+
+
+
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/descDetails"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:weightSum="1"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_weight=".3"
+                                android:layout_width="0dp"
+                                android:gravity="center_vertical"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:text="Description"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/black"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".5"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content">
+
+                                <EditText
+                                    android:id="@+id/itemDesc"
+                                    android:hint="Description"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <Spinner
+                                    android:id="@+id/descSpinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                </Spinner>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/descAddItem"
+                                    android:src="@android:drawable/ic_menu_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_margin="3dp"
+                                    android:onClick="onUpdate"
+                                    android:layout_height="match_parent" />
+
+                            </LinearLayout>
+
+
+
+
+                        </LinearLayout>
+
+
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp">
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+
+
+
+                </ScrollView>
+
+
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize">
+
+            <LinearLayout
+                android:layout_weight=".5"
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/addDetails"
+                    android:text="@string/add_details"
+                    android:layout_margin="2dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_weight=".5"
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/uploadButton"
+                    android:text="@string/upload"
+                    android:layout_margin="2dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:background="#fff"
+        android:id="@+id/singleItemDetails"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:gravity="bottom"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="?actionBarSize"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:ignore="UselessParent">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_margin="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:textStyle="italic"
+                            android:textColor="#504f4f"
+                            android:text="@string/add_remove_itemDetails_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:weightSum="1"
+                        android:layout_margin="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false">
+
+                        <LinearLayout
+                            android:layout_weight=".5"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent">
+                            <CheckBox
+                                android:id="@+id/itemIdCheck"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:text="@string/id"
+                                android:onClick="onCheckBoxClicked"
+                                />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_weight=".5"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent">
+                            <CheckBox
+                                android:id="@+id/itemNameCheck"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:text="@string/item_name"
+                                android:onClick="onCheckBoxClicked"
+                                />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:weightSum="1"
+                        android:layout_margin="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false">
+
+
+                        <LinearLayout
+                            android:layout_weight=".5"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent">
+                            <CheckBox
+                                android:id="@+id/itemCatCheck"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:text="@string/category"
+                                android:onClick="onCheckBoxClicked"/>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_weight=".5"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent">
+                            <CheckBox
+                                android:id="@+id/itemPriceCheck"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:text="@string/item_price"
+                                android:onClick="onCheckBoxClicked"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:weightSum="1"
+                        android:layout_margin="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false">
+
+                        <LinearLayout
+                            android:layout_weight=".5"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent">
+                            <CheckBox
+                                android:id="@+id/itemColorCheck"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:text="@string/item_color"
+                                android:onClick="onCheckBoxClicked"
+                                />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_weight=".5"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent">
+                            <CheckBox
+                                android:id="@+id/itemSizeCheck"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:text="@string/item_size"
+                                android:onClick="onCheckBoxClicked"
+                                />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:weightSum="1"
+                        android:layout_margin="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false">
+
+                        <LinearLayout
+                            android:layout_weight=".5"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent">
+
+                            <CheckBox
+                                android:id="@+id/itemBrandNameCheck"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:text="@string/item_brand_name"
+                                android:onClick="onCheckBoxClicked"
+                                />
+
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_weight=".5"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent">
+
+                            <CheckBox
+                                android:id="@+id/itemDescCheck"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:text="@string/item_description"
+                                android:onClick="onCheckBoxClicked"
+                                />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:weightSum="1"
+                        android:layout_margin="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false">
+
+                        <LinearLayout
+                            android:layout_weight=".5"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent">
+
+                            <CheckBox
+                                android:id="@+id/itemCountCheck"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:text="@string/item_count"
+                                android:onClick="onCheckBoxClicked"
+                                />
+
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_weight=".5"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent">
+
+                            <CheckBox
+                                android:id="@+id/itemExpiryDate"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:text="@string/item_expiry_date"
+                                android:onClick="onCheckBoxClicked"
+                                />
+
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <ProgressBar
+                        android:visibility="gone"
+                        android:id="@+id/productProgressBar"
+                        android:layout_width="match_parent"
+                        android:layout_margin="80dp"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </ScrollView>
+
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:background="#005066"
+            android:id="@+id/updateBtn"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            tools:ignore="UselessParent">
+
+            <TextView
+                android:text="@string/update"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#fff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/productMainProgressBar"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ProgressBar
+        android:visibility="gone"
+        android:indeterminateTint="#ff00"
+        android:id="@+id/uploadProgressBar"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+
+</RelativeLayout>

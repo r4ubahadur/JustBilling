@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#fff"
+    android:orientation="horizontal"
+    android:weightSum="3"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/main_invoice"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:weightSum="8"
+            android:layout_height="match_parent"
+            tools:ignore="NestedWeights">
+
+            <LinearLayout
+                android:layout_weight="5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal|bottom"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:background="@drawable/circle1"
+                        android:layout_width="50dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_height="50dp">
+
+                        <ImageView
+                            android:layout_margin="5dp"
+                            android:src="@drawable/invoices_icon"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_weight="3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+
+                <LinearLayout
+                    android:background="@drawable/round_corner_btn"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginEnd="20sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal"
+                        android:textSize="11sp"
+                        android:text="Invoice"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="3dp"
+                        android:textColor="#fff" />
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/main_order"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:weightSum="8"
+            android:layout_height="match_parent"
+            tools:ignore="NestedWeights">
+
+            <LinearLayout
+                android:layout_weight="5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal|bottom"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:background="@drawable/circle1"
+                        android:layout_width="50dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_height="50dp">
+
+                        <ImageView
+                            android:layout_margin="5dp"
+                            android:src="@drawable/order_icon"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_weight="3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+
+                <LinearLayout
+                    android:background="@drawable/round_corner_btn2"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginEnd="20sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal"
+                        android:textSize="11sp"
+                        android:text="Order"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="3dp"
+                        android:textColor="#fff" />
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/main_purchase"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:weightSum="8"
+            android:layout_height="match_parent"
+            tools:ignore="NestedWeights">
+
+            <LinearLayout
+                android:layout_weight="5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal|bottom"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:background="@drawable/circle1"
+                        android:layout_width="50dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_height="50dp">
+
+                        <ImageView
+                            android:layout_margin="5dp"
+                            android:src="@drawable/purchase_icon"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_weight="3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+
+                <LinearLayout
+                    android:background="@drawable/round_corner_btn3"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginEnd="20sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal"
+                        android:textSize="11sp"
+                        android:text="Purchase"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="3dp"
+                        android:textColor="#fff" />
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+</LinearLayout>

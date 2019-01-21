@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffff"
+    tools:context=".ProductsActivity">
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/addItem"
+                android:background="@drawable/bg"
+                android:layout_width="match_parent"
+                android:gravity="center_horizontal"
+                android:layout_height="45dp">
+
+                <TextView
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:text="@string/add_item"
+                    android:textColor="#06c200"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/bg"
+                android:layout_width="match_parent"
+                android:gravity="center_horizontal"
+                android:layout_height="45dp">
+
+                <TextView
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:text="@string/view_item"
+                    android:textColor="#c232ff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/bg"
+                android:layout_width="match_parent"
+                android:gravity="center_horizontal"
+                android:layout_height="45dp">
+
+                <TextView
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:text="@string/modify_item"
+                    android:textColor="#ffea08"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/bg"
+                android:layout_width="match_parent"
+                android:gravity="center_horizontal"
+                android:layout_height="45dp">
+
+                <TextView
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:text="@string/delete_item"
+                    android:textColor="#ff0000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/bg"
+                android:layout_width="match_parent"
+                android:gravity="center_horizontal"
+                android:layout_height="45dp">
+
+                <TextView
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:text="@string/move_item"
+                    android:textColor="#136aff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+</RelativeLayout>

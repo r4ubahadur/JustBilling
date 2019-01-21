@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:weightSum="13.035"
+    tools:context=".KotActivity">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:background="#f5f5f5"
+        android:layout_weight="5"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+
+
+        <RelativeLayout
+            android:background="#fff"
+            android:layout_width="match_parent"
+            android:layout_margin="4dp"
+            android:layout_height="match_parent">
+
+
+            <RelativeLayout
+                android:layout_above="@+id/dddddd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_above="@+id/ccccc"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/kotSales"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </android.support.v7.widget.RecyclerView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ccccc"
+                    android:orientation="vertical"
+                    android:background="#e7bbefff"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:weightSum="1"
+                    android:layout_alignParentBottom="true">
+
+                    <LinearLayout
+                        android:layout_weight=".5"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp">
+
+                        <ImageView
+                            android:src="@drawable/discount"
+                            android:layout_margin="3dp"
+                            android:layout_width="25dp"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_weight=".5"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp">
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="3dp"
+                            android:src="@drawable/tax" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/dddddd"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                android:background="@color/colorAccent"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_alignParentBottom="true">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_weight=".4"
+                    android:layout_width="0dp"
+                    android:layout_marginStart="4dp"
+                    android:gravity="start|center"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:text="Total"
+                        android:textColor="#fff"
+                        android:textSize="11sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/total_kot_price"
+                        android:text="₹ 500.15"
+                        android:textStyle="bold"
+                        android:textColor="#fff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_weight=".6"
+                    android:layout_width="0dp"
+                    android:gravity="end|center"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/kotBtn"
+                        android:textStyle="bold"
+                        android:textColor="#fff"
+                        android:padding="5dp"
+                        android:text="KOT"
+                        android:layout_marginEnd="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/processKey"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Proceed >"
+                        android:textStyle="bold"
+                        android:layout_marginEnd="4dp"
+                        android:textColor="#fff"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+
+
+
+
+            </LinearLayout>
+
+
+
+        </RelativeLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+
+    <View
+        android:background="#838383"
+        android:layout_weight=".035"
+        android:layout_width="0dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_height="match_parent"/>
+
+
+    <android.support.design.widget.CoordinatorLayout
+        android:background="#f5f5f5"
+        android:layout_weight="8"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/main_cat_section"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="FOOD MENU"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/food_category"
+                    android:layout_margin="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
+
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="RICE MENU"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rice_category"
+                    android:layout_margin="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
+
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="DRINK MENU"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/drink_category"
+                    android:layout_margin="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/sub_category_llayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/sub_category_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </android.support.v7.widget.RecyclerView>
+
+
+        </LinearLayout>
+
+
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/add_product"
+            app:fabSize="mini"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            app:srcCompat="@android:drawable/ic_input_add" />
+
+
+
+    </android.support.design.widget.CoordinatorLayout>
+
+
+
+
+</LinearLayout>

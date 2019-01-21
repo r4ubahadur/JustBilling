@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/abril_fatface</item>
+        <item>@font/aclonica</item>
+        <item>@font/alegreya_italic</item>
+        <item>@font/allura</item>
+        <item>@font/amarante</item>
+        <item>@font/anton</item>
+        <item>@font/archivo_black</item>
+        <item>@font/berkshire_swash</item>
+        <item>@font/bubbler_one</item>
+        <item>@font/bungee_shade</item>
+        <item>@font/candal</item>
+        <item>@font/cherry_cream_soda</item>
+        <item>@font/comfortaa</item>
+        <item>@font/diplomata</item>
+        <item>@font/fjalla_one</item>
+        <item>@font/ribeye_marrow</item>
+    </array>
+</resources>

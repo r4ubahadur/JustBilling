@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="#a9a7a7"
+    android:layout_height="match_parent">
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginStart="10sp"
+            android:layout_marginEnd="10sp"
+            android:layout_marginTop="10sp"
+            android:layout_width="match_parent"
+            android:background="#fff"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/amarante"
+                    android:textColor="#000"
+                    android:text="@string/silicon_marketing_india"
+                    android:textSize="20sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_weight=".5"
+                    android:layout_width="0dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:id="@+id/bill_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/comfortaa"
+                        android:text="Bill No:-  SMI-18-19-1"
+                        android:textColor="#000" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight=".5"
+                    android:layout_width="0dp"
+                    android:gravity="end"
+                    android:layout_marginEnd="20dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/bill_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/comfortaa"
+                        android:text="Date. 01/01/2019"
+                        android:textColor="#000" />
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_marginTop="20dp"
+                android:background="#000"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"/>
+            <include layout="@layout/single_bill_header"/>
+            <View
+                android:background="#000"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/onlineBill"
+                android:layout_width="match_parent"
+                android:minHeight="245dp"
+                android:layout_height="wrap_content">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <View
+                android:background="#000"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"/>
+
+            <include layout="@layout/single_bill_footer"/>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp">
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:gravity="end"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_marginTop="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:fontFamily="@font/archivo_black"
+                android:text="Print"
+                android:textColor="#fff" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="3dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/nextBilling"
+                android:text="Open Table"
+                android:textColor="#fff"
+                android:background="@color/colorPrimary"
+                android:fontFamily="@font/archivo_black"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

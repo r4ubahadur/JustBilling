@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "736189115884",
+    "firebase_url": "https://justbilling-b4d7a.firebaseio.com",
+    "project_id": "justbilling-b4d7a",
+    "storage_bucket": "justbilling-b4d7a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736189115884:android:d8f7a6183aa98692",
+        "android_client_info": {
+          "package_name": "com.smi.justbilling"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "736189115884-c2pbpus7h8jqp1pp4kfeeac2g4oi05q5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.smi.justbilling",
+            "certificate_hash": "276b97db625110a240551cc05abe08c6f2d3cd26"
+          }
+        },
+        {
+          "client_id": "736189115884-bv2fv5li9m20v2s5i5h9837l8prrgh4q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8qKtuz_XTUzxTiB8fYCBB6yDXMZxpnI0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "736189115884-bv2fv5li9m20v2s5i5h9837l8prrgh4q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
