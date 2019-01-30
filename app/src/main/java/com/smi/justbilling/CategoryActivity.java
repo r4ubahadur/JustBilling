@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CategoryActivity extends AppCompatActivity {
 
@@ -27,12 +28,27 @@ public class CategoryActivity extends AppCompatActivity {
 
     private ProgressDialog mainProgressDialog;
 
+    private Boolean animation = true;
+    private String anim;
+
     private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category); //category_list
+
+
+
+        try {
+            anim = Objects.requireNonNull(super.getIntent().getExtras()).getString("animation");
+            if (Objects.equals(anim, "true")){
+                animation = true;
+                }
+        }catch (Exception e){
+            animation = false;
+        }
+
 
 
         mainProgressDialog = new ProgressDialog(this);
@@ -105,9 +121,23 @@ public class CategoryActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
+        super.onBackPressed();
+
         Intent first = new Intent(CategoryActivity.this, ManagementActivity.class);
         startActivity(first);
-        overridePendingTransition(R.anim.l2r_enter, R.anim.r2exit);
-        finish();
+
+        if (animation){
+            overridePendingTransition( R.anim.b2t_enter,  R.anim.t2exit);
+            finish();
+        }else {
+            overridePendingTransition(R.anim.l2r_enter, R.anim.r2exit);
+            finish();
+
+        }
+
+
+
+
     }
 }

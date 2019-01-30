@@ -14,91 +14,35 @@ import java.util.List;
 
 import in.smi.ru.uttamlibrary.Uttam;
 
-public class KotProductAdapter extends RecyclerView.Adapter<KotProductAdapter.ImageViewHolder> implements View.OnClickListener,
+public class AllItemAdapter extends RecyclerView.Adapter<AllItemAdapter.ImageViewHolder> implements View.OnClickListener,
         View.OnLongClickListener   {
 
     private Context mContext;
     private List<Uttam> mUpload;
-    private OnItemClickListenerInvoice mListener;
+    private OnAllItemClickListener mListener;
     private OnItemLongClickListener mLongListener;
 
 
 
-    public KotProductAdapter(Context context, List<Uttam> upload) {
+    public AllItemAdapter(Context context, List<Uttam> upload) {
         mContext = context;
         mUpload = upload;
     }
 
     @Override
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.single_item_product_kot, parent, false);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.abc_all_item_single, parent, false);
         return new ImageViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(final ImageViewHolder holder, int position) {
         Uttam upload = mUpload.get(position);
-        holder.textViewName.setText(upload.getName().toUpperCase());
-        holder.textViewPrice.setText("₹ "+upload.getPrice3());
+        holder.textViewName.setText(upload.getName());
+        holder.textViewPrice.setText("₹ "+upload.getPrice());
 
-        String count = upload.getCount();
-        if (count.equals("")){
-
-            holder.textViewCount.setText("1 Each");
-        }else {
-
-            holder.textViewCount.setText(upload.getCount()+" Each");
-        }
-
-        String tax = upload.getTax();
-
-        try {
-
-            if (tax.equals("")||tax.equals("0")){
-
-                holder.textViewGst.setText("0.00");
-            }else {
-                double gst = Double.parseDouble(tax);
-                double c_s = gst/2;
-                String mGST = String.format("%.1f", c_s);
-                holder.textViewGst.setText("CGST "+"@ "+mGST+"% " + " + SGST " + "@ "+mGST+"%");
-            }
-
-        }catch (Exception e){
-
-            holder.textViewGst.setText("CGST "+"@ "+"0.0"+"% " + " + SGST " + "@ "+"0.0"+"%");
-
-        }
-
-
-
-
-
-        /*
-
-        Picasso.with(mContext)
-                .load(upload.getThumbImageUrl())
-                .placeholder(R.drawable.purchase_icon)
-                .fit()
-                .centerCrop()
-               // .networkPolicy(NetworkPolicy.OFFLINE)
-                .into(holder.imageView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-                });
-
-        */
 
         holder.textViewName.setSelected(true);
-
-
 
        // if(position == getItemCount() - 1){ holder.textViewName.setVisibility(View.INVISIBLE); }
 
@@ -128,7 +72,7 @@ public class KotProductAdapter extends RecyclerView.Adapter<KotProductAdapter.Im
             View.OnLongClickListener {
 
 
-        public TextView textViewName, textViewPrice, textViewCount, textViewGst;
+        public TextView textViewName, textViewPrice, textViewCount;
         public ImageView imageView;
 
 
@@ -139,7 +83,6 @@ public class KotProductAdapter extends RecyclerView.Adapter<KotProductAdapter.Im
             textViewName = itemView.findViewById(R.id.text_view_name);
             textViewPrice = itemView.findViewById(R.id.text_view_price);
             textViewCount = itemView.findViewById(R.id.kot_single_count);
-            textViewGst = itemView.findViewById(R.id.text_view_gst);
 
 
             imageView = itemView.findViewById(R.id.image_view_upload);
@@ -156,7 +99,7 @@ public class KotProductAdapter extends RecyclerView.Adapter<KotProductAdapter.Im
             if (mListener != null) {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
-                    mListener.onItemClickInvoice(position);
+                    mListener.onAllItemClick(position);
                 }
             }
 
@@ -179,8 +122,8 @@ public class KotProductAdapter extends RecyclerView.Adapter<KotProductAdapter.Im
 
     }
 
-    public interface OnItemClickListenerInvoice {
-        void onItemClickInvoice(int position);
+    public interface OnAllItemClickListener {
+        void onAllItemClick(int position);
 
 
     }
@@ -194,7 +137,7 @@ public class KotProductAdapter extends RecyclerView.Adapter<KotProductAdapter.Im
 
 
 
-    public void setOnItemClickListener(OnItemClickListenerInvoice listener) {
+    public void setOnItemClickListener(OnAllItemClickListener listener) {
 
         mListener = listener;
     }

@@ -48,18 +48,45 @@ public class BillSingleItemAdapter extends RecyclerView.Adapter<BillSingleItemAd
         }
 
 
-        if (upload.getPrice().equals("")){
+        if (upload.getPrice3().equals("")){
             holder.price.setText("0.00");
         }else {
-            holder.price.setText(upload.getPrice());
+            holder.price.setText(upload.getPrice3());
         }
 
 
         if (upload.getPrice2().equals("")){
             holder.totalPrice.setText("0.00");
         }else {
-            holder.totalPrice.setText(upload.getPrice2());
+            holder.totalPrice.setText(upload.getPrice2()+".00");
         }
+
+
+
+        String tax = upload.getTax();
+
+        try {
+
+            if (tax.equals("")||tax.equals("0")){
+
+                holder.tax.setText("0.00");
+            }else {
+                double gst = Double.parseDouble(tax);
+                double c_s = gst/2;
+                String mGST = String.format("%.1f", c_s);
+                holder.tax.setText("CGST @"+mGST+"%" +"\n"+ "SGST @"+mGST+"%");
+            }
+
+        }catch (Exception e){
+
+            holder.tax.setText("CGST @"+"0.0"+"%" +"\n"+ "SGST @"+"0.0"+"%");
+
+        }
+
+
+
+
+
 
         if (upload.getCount().equals("")){
             holder.quantity.setText("1");
@@ -102,7 +129,7 @@ public class BillSingleItemAdapter extends RecyclerView.Adapter<BillSingleItemAd
             View.OnLongClickListener {
 
 
-        public TextView textViewName, price, totalPrice, quantity;
+        public TextView textViewName, price, tax, totalPrice, quantity;
         public ImageView imageView;
         public View viewId;
 
@@ -111,10 +138,11 @@ public class BillSingleItemAdapter extends RecyclerView.Adapter<BillSingleItemAd
         public ImageViewHolder(View itemView) {
             super(itemView);
 
-            textViewName = itemView.findViewById(R.id.bill_single_item_name);
             totalPrice = itemView.findViewById(R.id.bill_single_item_total_price);
+            textViewName = itemView.findViewById(R.id.bill_single_item_name);
             quantity = itemView.findViewById(R.id.bill_single_item_quantity);
             price = itemView.findViewById(R.id.bill_single_item_price);
+            tax = itemView.findViewById(R.id.bill_single_item_tax);
 
 
 

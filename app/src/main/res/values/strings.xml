@@ -59,4 +59,8 @@
     <string name="sub_category">Sub Category</string>
     <string name="sub_item_list">Sub Item List</string>
     <string name="a2z">abcdefghijklmnopqrstuvwxyz</string>
+    <string name="company_name_kot">SILICON MARKETING INDIA</string>
+    <string name="tax">Tax</string>
+    <string name="gst"><![CDATA[CGST @ 2.5% + SGST @ 2.5%]]></string>
+    <string name="smi"><u>SILICON</u></string>
 </resources>

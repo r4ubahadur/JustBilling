@@ -49,7 +49,7 @@ dependencies {
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
 
-    implementation 'com.github.uttam12345678:Uttam:1.0'
+    implementation 'com.github.uttam12345678:Uttam:1.2'
 
 
 }

@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#FF5214EF</color>
+    <color name="colorPrimary2">#ca7742fc</color>
+
     <color name="colorPrimaryDark">#27057b</color>
     <color name="colorAccent">#c200dc</color>
 
     <color name="scrollbar">#494d48</color>
+
+    <color name="btn_pressed">#3e0ac2</color>
+
+    <color name="btn_pressed2">#1d035c</color>
+
+    <color name="btn_state">#494d48</color>
+
+    <color name="btn2">#494d48</color>
+
+    <color name="btn">#494d48</color>
+
 
 
 

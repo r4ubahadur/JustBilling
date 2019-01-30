@@ -34,10 +34,26 @@ public class WaiterActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
 
+    private Boolean animation = true;
+    private String anim;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiter);
+
+
+
+
+
+        try {
+            anim = Objects.requireNonNull(super.getIntent().getExtras()).getString("animation5");
+            if (Objects.equals(anim, "true")){
+                animation = true;
+            }
+        }catch (Exception e){
+            animation = false;
+        }
 
 
 
@@ -147,6 +163,23 @@ public class WaiterActivity extends AppCompatActivity {
 
 
 
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent first = new Intent(WaiterActivity.this, ManagementActivity.class);
+        startActivity(first);
+
+        if (animation){
+
+            overridePendingTransition(R.anim.l2r_enter, R.anim.r2exit);
+            finish();
+        }else {
+            super.onBackPressed();
+            finish();
+
+        }
 
     }
 }

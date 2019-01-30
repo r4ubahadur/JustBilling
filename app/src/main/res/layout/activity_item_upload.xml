@@ -594,6 +594,74 @@
                         </LinearLayout>
                         <LinearLayout
                             android:visibility="gone"
+                            android:id="@+id/taxDetails"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:weightSum="1"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_weight=".3"
+                                android:layout_width="0dp"
+                                android:gravity="center_vertical"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:text="Tax"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/black"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".5"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content">
+
+                                <EditText
+                                    android:id="@+id/itemTax"
+                                    android:inputType="numberDecimal"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <Spinner
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                </Spinner>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_weight=".1"
+                                android:layout_width="0dp"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/taxAddItem"
+                                    android:src="@android:drawable/ic_menu_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_margin="3dp"
+                                    android:onClick="onUpdate"
+                                    android:layout_height="match_parent" />
+
+                            </LinearLayout>
+
+
+
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:visibility="gone"
                             android:id="@+id/exDateDetails"
                             android:orientation="horizontal"
                             android:layout_width="match_parent"
@@ -800,6 +868,8 @@
 
     </LinearLayout>
 
+
+
     <LinearLayout
         android:visibility="gone"
         android:background="#fff"
@@ -836,6 +906,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
+
 
                     <LinearLayout
                         android:weightSum="1"
@@ -906,6 +977,42 @@
                         </LinearLayout>
 
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:weightSum="1"
+                        android:layout_margin="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false">
+
+
+                        <LinearLayout
+                            android:layout_weight=".5"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent">
+                            <CheckBox
+                                android:id="@+id/itemTaxCheck"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:text="@string/tax"
+                                android:onClick="onCheckBoxClicked"/>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:layout_weight=".5"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent">
+                            <CheckBox
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:text="@string/item_price"
+                                android:onClick="onCheckBoxClicked"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
                     <LinearLayout
                         android:weightSum="1"
                         android:layout_margin="10dp"
@@ -1019,6 +1126,8 @@
                         </LinearLayout>
 
                     </LinearLayout>
+
+
 
                     <ProgressBar
                         android:visibility="gone"

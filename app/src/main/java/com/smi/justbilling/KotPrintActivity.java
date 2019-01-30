@@ -41,7 +41,6 @@ import in.smi.ru.uttamlibrary.Uttam;
 
 public class KotPrintActivity extends AppCompatActivity implements KotAdapter.OnItemClickListener {
 
-    private String tableName, tableNumber, waiterName, date;
     private TextView table_name, waiter_name, kot_date;
 
     private DatabaseReference mDatabase;
@@ -56,9 +55,12 @@ public class KotPrintActivity extends AppCompatActivity implements KotAdapter.On
 
     private Bitmap bitmap;
 
+    private String tableName, tableNumber, waiterName, date, specialDate, kotNumber;
     private String ran, ran2, ran3, fileName, random,random2,random3, filePath = "/sdcard/silicon/Data/pdf/", silicon = "/silicon/Data/pdf";
 
     private Context context = this;
+
+    private TextView kot_number;
 
 
 
@@ -70,11 +72,11 @@ public class KotPrintActivity extends AppCompatActivity implements KotAdapter.On
 
 
         tableName = Objects.requireNonNull(super.getIntent().getExtras()).getString("tableName");
-
         tableNumber = Objects.requireNonNull(super.getIntent().getExtras()).getString("tableNumber");
-
         waiterName = Objects.requireNonNull(super.getIntent().getExtras()).getString("waiterName");
         date = Objects.requireNonNull(super.getIntent().getExtras()).getString("date");
+        specialDate = Objects.requireNonNull(super.getIntent().getExtras()).getString("specialDate");
+        kotNumber = Objects.requireNonNull(super.getIntent().getExtras()).getString("kotNumber");
 
 
         kot_print = findViewById(R.id.kot_print);
@@ -84,9 +86,14 @@ public class KotPrintActivity extends AppCompatActivity implements KotAdapter.On
         waiter_name = findViewById(R.id.waiter_name);
         kot_date = findViewById(R.id.kot_date);
 
+        kot_number = findViewById(R.id.kot_number);
+
+        int ss = Integer.parseInt(kotNumber)+1;
+        kot_number.setText(String.valueOf(ss));
+
         table_name.setText(tableName);
         waiter_name.setText("WAITER :  "+waiterName);
-        kot_date.setText(date);
+        kot_date.setText("Date: "+specialDate);
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -193,8 +200,6 @@ public class KotPrintActivity extends AppCompatActivity implements KotAdapter.On
 
 
 
-
-
         char[] chars1 = getString(R.string.a2z).toCharArray();
         StringBuilder sb1 = new StringBuilder();
         Random randm1 = new Random();
@@ -227,20 +232,10 @@ public class KotPrintActivity extends AppCompatActivity implements KotAdapter.On
         }
         ran3 = sb3.toString();
 
-
-
         fileName = date+"_"+ran+random+ran2+random2+ran3+random3;
-
-
-
-
 
         File f2 = new File(Environment.getExternalStorageDirectory().toString()+silicon);
         f2.mkdirs();
-
-
-
-
 
 
         // write the document content
@@ -258,6 +253,14 @@ public class KotPrintActivity extends AppCompatActivity implements KotAdapter.On
         // close the document
         document.close();
         Toast.makeText(this, "success", Toast.LENGTH_SHORT).show();
+
+
+
+        int kotNo = Integer.parseInt(kotNumber)+1;
+
+        mDatabase.child("finalbill").child("currentKot").child("number").setValue(String.valueOf(kotNo));
+
+
 
         openGeneratedPDF();
 
@@ -289,16 +292,6 @@ public class KotPrintActivity extends AppCompatActivity implements KotAdapter.On
 
         return b;
     }
-
-
-
-
-
-
-
-
-
-
 
 
 

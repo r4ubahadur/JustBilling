@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,8 @@ public class ManagementActivity extends AppCompatActivity
 
     private boolean doubleBackToExitPressedOnce = false;
 
+    private Button fab, v_bill, category_a;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,7 @@ public class ManagementActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,6 +59,31 @@ public class ManagementActivity extends AppCompatActivity
                 overridePendingTransition(R.anim.r2l_enter, R.anim.l2exit);
             }
         });
+
+
+        v_bill = findViewById(R.id.v_bill);
+        v_bill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent first2 = new Intent(ManagementActivity.this, ViewBillActivity.class);
+                startActivity(first2);
+                overridePendingTransition( R.anim.b2exit, R.anim.t2b_enter);
+            }
+        });
+
+        category_a = findViewById(R.id.category_a);
+        category_a.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent cat = new Intent(ManagementActivity.this, CategoryActivity.class);
+                cat.putExtra("animation", "true");
+                startActivity(cat);
+                overridePendingTransition( R.anim.b2exit, R.anim.t2b_enter);
+            }
+        });
+
+
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -195,28 +223,38 @@ public class ManagementActivity extends AppCompatActivity
             // Handle the camera action
 
             Intent add = new Intent(ManagementActivity.this, CategoryActivity.class);
+            add.putExtra("animation2", "true");
             startActivity(add);
+            overridePendingTransition(R.anim.r2l_enter, R.anim.l2exit);
 
         } else if (id == R.id.viewBill) {
 
             Intent bill = new Intent(ManagementActivity.this, ViewBillActivity.class);
+            bill.putExtra("animation3", "true");
             startActivity(bill);
+            overridePendingTransition(R.anim.r2l_enter, R.anim.l2exit);
 
 
         }else if (id == R.id.nav_category) {
 
             Intent waiter = new Intent(ManagementActivity.this, CategoryActivity.class);
+            waiter.putExtra("animation4", "true");
             startActivity(waiter);
+            overridePendingTransition(R.anim.r2l_enter, R.anim.l2exit);
 
         } else if (id == R.id.nav_waiter) {
 
             Intent waiter = new Intent(ManagementActivity.this, WaiterActivity.class);
+            waiter.putExtra("animation5", "true");
             startActivity(waiter);
+            overridePendingTransition(R.anim.r2l_enter, R.anim.l2exit);
 
         } else if (id == R.id.nav_report) {
 
             Intent waiter = new Intent(ManagementActivity.this, ReportActivity.class);
+            waiter.putExtra("animation6", "true");
             startActivity(waiter);
+            overridePendingTransition(R.anim.r2l_enter, R.anim.l2exit);
 
         } else if (id == R.id.nav_send) {
 

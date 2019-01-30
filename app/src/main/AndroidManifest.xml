@@ -142,8 +142,10 @@
             android:label="@string/sub_category"
             android:screenOrientation="landscape" />
         <activity
-            android:theme="@style/SubItemList"
             android:name=".SubItemListActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/SubItemList" />
+        <activity android:name=".EditInvoiceItemActivity"
             android:screenOrientation="landscape"/>
     </application>
 

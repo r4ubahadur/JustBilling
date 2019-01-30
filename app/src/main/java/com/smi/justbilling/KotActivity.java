@@ -1,5 +1,6 @@
 package com.smi.justbilling;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -10,8 +11,14 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,8 +28,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.smi.justbilling.adapter.AllItemAdapter;
 import com.smi.justbilling.adapter.DrinkAdapter;
 import com.smi.justbilling.adapter.FoodAdapter;
 import com.smi.justbilling.adapter.KotProductAdapter;
@@ -31,7 +40,9 @@ import com.smi.justbilling.adapter.SubCatAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -40,34 +51,42 @@ import in.smi.ru.uttamlibrary.Uttam;
 
 public class KotActivity extends AppCompatActivity implements
        // SalesProductAdapter.OnItemClickListener,
-        KotProductAdapter.OnItemClickListener,
+        AllItemAdapter.OnAllItemClickListener,
+        KotProductAdapter.OnItemClickListenerInvoice,
         DrinkAdapter.OnItemClickListenerDrink,
         FoodAdapter.OnItemClickListenerFood,
         RiceAdapter.OnItemClickListenerRice,
         SubCatAdapter.OnItemClickListenerSub {
 
 
-    private LinearLayout main_cat_section, sub_category_llayout;
 
+    protected LinearLayoutManager mLayoutManager;
 
-    private RecyclerView dRecyclerView, mRecyclerView, nRecyclerView, fRecyclerView, rRecyclerView, subRecyclerView;
+    private LinearLayout main_cat_section, sub_category_llayout, search_layout;
+    private ScrollView all_cat_layout;
+
+    private RecyclerView dRecyclerView, nRecyclerView, fRecyclerView, rRecyclerView, subRecyclerView, allRecyclerView;
 
     private DatabaseReference mDatabase;
 
-    private List<Uttam> dUploads;
-    private List<Uttam> fUploads, mUploads, nUploads, rUploads, subUploads;
+    private List<Uttam> dUploads, fUploads, nUploads, rUploads, subUploads, allUploads;
+
+    List<Integer> list = new ArrayList<>();
 
     private DrinkAdapter dAdapter;
     private FoodAdapter fAdapter;
     private RiceAdapter rAdapter;
-
     private SubCatAdapter subAdapter;
-
-
     private KotProductAdapter nAdapter;
+    private AllItemAdapter allAdapter;
 
-    private String tableName, waiterName, tableNumber, date, currentBillNumber, companyShortName = "SMI", financialYearSortForm;
-    private String cateName, subCateName;
+
+    private EditText item_search;
+    private Button search_btn;
+
+
+    private String tableName, waiterName, tableNumber, date, specialDate, currentBillNumber, currentKotNumber, companyShortName = "SMI", financialYearSortForm;
+    private String cateName, subCateName, maxNumber;
 
 
     @Override
@@ -84,14 +103,14 @@ public class KotActivity extends AppCompatActivity implements
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
 
+        search_layout = findViewById(R.id.search_layout);
+        all_cat_layout = findViewById(R.id.all_cat_layout);
 
+        item_search = findViewById(R.id.item_search);
+        search_btn = findViewById(R.id.search_btn);
 
         main_cat_section = findViewById(R.id.main_cat_section);
         sub_category_llayout = findViewById(R.id.sub_category_llayout);
-
-
-
-
 
 
 
@@ -106,25 +125,12 @@ public class KotActivity extends AppCompatActivity implements
 
 
 
-
-
-
-
         fRecyclerView = findViewById(R.id.food_category);
         fRecyclerView.setLayoutManager(new GridLayoutManager(this,3));
         fUploads = new ArrayList<>();
         fAdapter = new FoodAdapter(KotActivity.this, fUploads);
         fRecyclerView.setAdapter(fAdapter);
         fAdapter.setOnItemClickListener(KotActivity.this);
-
-
-
-
-
-
-
-
-
 
 
 
@@ -139,10 +145,6 @@ public class KotActivity extends AppCompatActivity implements
 
 
 
-
-
-
-
         subRecyclerView = findViewById(R.id.sub_category_layout);
         subRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
         subUploads = new ArrayList<>();
@@ -153,28 +155,118 @@ public class KotActivity extends AppCompatActivity implements
 
 
 
+        /*
+        mRecyclerView = findViewById(R.id.salesProduct);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this,4));
+        mUploads = new ArrayList<>();
+        mAdapter = new SalesProductAdapter(KotActivity.this, mUploads);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(KotActivity.this);
+        */
+        mLayoutManager = new LinearLayoutManager(this);
+
+        nRecyclerView = findViewById(R.id.kotSales);
+        nRecyclerView.setLayoutManager(mLayoutManager);
+        nUploads = new ArrayList<>();
+        nAdapter = new KotProductAdapter(KotActivity.this, nUploads);
+        nRecyclerView.setAdapter(nAdapter);
+        nAdapter.setOnItemClickListener(KotActivity.this);
+
+       // mDatabase.keepSynced(true);
+
+        mDatabase.child("uttam").child(tableName).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                nUploads.clear();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Uttam upload = postSnapshot.getValue(Uttam.class);
+                    Objects.requireNonNull(upload).setKey(postSnapshot.getKey());
+                    nUploads.add(upload);
+                }
+                nAdapter.notifyDataSetChanged();
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+        FloatingActionButton add_product = findViewById(R.id.add_product);
+        add_product.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent first = new Intent(KotActivity.this, CategoryActivity.class);
+                startActivity(first);
+            }
+        });
+
+        mDatabase.child("uttam").child(tableName)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        TextView TotalAmount = findViewById(R.id.total_kot_price);
+                        TextView tax_total = findViewById(R.id.tax_total);
+
+                        if (dataSnapshot.exists()){
+
+                            double sum2 = 0;
+                            double sum3 = 0;
+                            double tax = 0;
+
+                            for(DataSnapshot ru : dataSnapshot.getChildren()) {
+
+
+
+                                Map<String,Object> map = (Map<String,Object>) ru.getValue();
+
+                                Object priceTwo = Objects.requireNonNull(map).get("price2");
+                                Object priceThree = Objects.requireNonNull(map).get("price3");
+                                Object priceFour = Objects.requireNonNull(map).get("disPrice");
+
+                                if (priceTwo==null ||priceThree==null ){
+                                }else {
+                                    double price2 = Double.parseDouble(String.valueOf(priceTwo));
+                                    double price3 = Double.parseDouble(String.valueOf(priceThree));
+
+                                    sum2 =+ sum2 + price2;
+                                    sum3 =+ sum3 + price3;
+                                    tax = sum2 - sum3;
+                                }
+
+                              //  if ()
 
 
 
 
 
+                            }
+
+                            TotalAmount.setText("₹ "+String.format("%.2f", sum2));
+                            tax_total.setText("₹ "+String.format("%.2f", tax));
+
+
+                        }else {
+                            TotalAmount.setText("₹ 0.00");
+                            tax_total.setText("₹ 0.00");
+
+                        }
 
 
 
+                    }
 
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-
-
-
-
-
-
-
-
-
-
-
-
+                    }
+                });
 
 
 
@@ -199,108 +291,19 @@ public class KotActivity extends AppCompatActivity implements
                     }
                 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-        /*
-        mRecyclerView = findViewById(R.id.salesProduct);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this,4));
-        mUploads = new ArrayList<>();
-        mAdapter = new SalesProductAdapter(KotActivity.this, mUploads);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(KotActivity.this);
-        */
-
-
-
-
-
-        nRecyclerView = findViewById(R.id.kotSales);
-        nRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        nUploads = new ArrayList<>();
-        nAdapter = new KotProductAdapter(KotActivity.this, nUploads);
-        nRecyclerView.setAdapter(nAdapter);
-        nAdapter.setOnItemClickListener(KotActivity.this);
-
-
-       // mDatabase.keepSynced(true);
-
-
-        mDatabase.child("uttam").child(tableName).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                nUploads.clear();
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Uttam upload = postSnapshot.getValue(Uttam.class);
-                    Objects.requireNonNull(upload).setKey(postSnapshot.getKey());
-                    nUploads.add(upload);
-                }
-                nAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
-        FloatingActionButton add_product = findViewById(R.id.add_product);
-        add_product.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent first = new Intent(KotActivity.this, CategoryActivity.class);
-                startActivity(first);
-            }
-        });
-
-        mDatabase.child("uttam").child(tableName)
+        mDatabase.child("finalbill").child("currentKot").child("number")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-
                         if (dataSnapshot.exists()){
-
-
-
-                            int sum = 0;
-                            for(DataSnapshot ds : dataSnapshot.getChildren()) {
-
-                                Map<String,Object> map = (Map<String,Object>) ds.getValue();
-
-                                Object price = Objects.requireNonNull(map).get("price2");
-
-                                if (price==null){
-
-                                }else {
-                                    int value = Integer.parseInt(String.valueOf(price));
-                                    sum =+ sum + value;
-                                }
-                            }
-
-
-                            TextView total2 = findViewById(R.id.total_kot_price);
-                            total2.setText("₹ "+String.valueOf(sum)+".00");
-
-
+                            currentKotNumber = Objects.requireNonNull(dataSnapshot.getValue()).toString();
                         }else {
-
-                            TextView total2 = findViewById(R.id.total_kot_price);
-                            total2.setText("₹ 0.00");
-
+                            mDatabase.child("finalbill")
+                                    .child("currentKot")
+                                    .child("number")
+                                    .setValue("0");
+                            currentKotNumber = "0";
                         }
-
-
-
                     }
 
                     @Override
@@ -308,6 +311,10 @@ public class KotActivity extends AppCompatActivity implements
 
                     }
                 });
+
+
+
+
 
 
 
@@ -428,14 +435,6 @@ public class KotActivity extends AppCompatActivity implements
 
 
 
-
-
-
-
-
-
-
-
                                                                             }
                    });
 
@@ -446,14 +445,6 @@ public class KotActivity extends AppCompatActivity implements
 
                                                             }
                                                         });
-
-
-
-
-
-
-
-
 
 
                                                 //  Toast.makeText(ManagementActivity.this, dateString, Toast.LENGTH_SHORT).show();
@@ -486,6 +477,9 @@ public class KotActivity extends AppCompatActivity implements
             public void onClick(View v) {
 
 
+
+                //time
+
                 mDatabase.child("date").child("servervalue").setValue(ServerValue.TIMESTAMP)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -495,36 +489,39 @@ public class KotActivity extends AppCompatActivity implements
                                     mDatabase.child("date").child("servervalue").addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
-
                                             if (dataSnapshot.exists()) {
                                                 String timestamp = Objects.requireNonNull(dataSnapshot.getValue()).toString();   // use ms NOT s
                                                 SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyy");
+                                                SimpleDateFormat specialDateFormat = new SimpleDateFormat("dd/MM/yyyy");
                                                 date = dateFormat.format(new Date(Long.parseLong(timestamp)));
+                                                specialDate = specialDateFormat.format(new Date(Long.parseLong(timestamp)));
 
                                                 Intent abc = new Intent(KotActivity.this, KotPrintActivity.class);
                                                 abc.putExtra("waiterName", waiterName);
                                                 abc.putExtra("tableName", tableName);
                                                 abc.putExtra("tableNumber", tableNumber);
                                                 abc.putExtra("date", date);
+                                                abc.putExtra("kotNumber", currentKotNumber);
+                                                abc.putExtra("specialDate", specialDate);
                                                 startActivity(abc);
-
-
                                             }
-
                                         }
-
                                         @Override
                                         public void onCancelled(DatabaseError databaseError) {
-
-                                        }
+                                            }
                                     });
                                 }
                             }
                         });
 
 
+                //time
+
+
+
             }
         });
+
 
 
         mDatabase.child("uttam")
@@ -532,13 +529,9 @@ public class KotActivity extends AppCompatActivity implements
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-
-
                         if (!dataSnapshot.exists()){
-
                             mDatabase.child("uttam").child("waiter").child(tableName).removeValue();
                         }
-
                     }
 
                     @Override
@@ -582,11 +575,6 @@ public class KotActivity extends AppCompatActivity implements
 
                     }
                 });
-
-
-
-
-
 
 
 
@@ -652,6 +640,156 @@ public class KotActivity extends AppCompatActivity implements
 
 
 
+
+
+
+
+
+
+
+
+
+        allRecyclerView = findViewById(R.id.allRecyclerView);
+        allRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        allUploads = new ArrayList<>();
+        allAdapter = new AllItemAdapter(KotActivity.this, allUploads);
+        allRecyclerView.setAdapter(allAdapter);
+        allAdapter.setOnItemClickListener(KotActivity.this);
+
+
+
+
+
+        item_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                final String item = item_search.getText().toString().toLowerCase();
+                search_layout.setVisibility(View.VISIBLE);
+                all_cat_layout.setVisibility(View.GONE);
+
+                Query query = mDatabase.child("products").child("allItem").orderByChild("name").startAt(item).endAt(item+"\uf8ff");
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        if (!dataSnapshot.exists()){ allUploads.clear(); }
+
+                        if (!item.equals("")){
+                            allUploads.clear();
+                            for (DataSnapshot a : dataSnapshot.getChildren()) {
+                                Uttam item = a.getValue(Uttam.class);
+                                Objects.requireNonNull(item).setKey(a.getKey());
+                                allUploads.add(item);
+                            }
+                            allAdapter.notifyDataSetChanged();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+        search_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String item = item_search.getText().toString().toLowerCase();
+              //  Toast.makeText(KotActivity.this, item , Toast.LENGTH_SHORT).show();
+
+                search_layout.setVisibility(View.VISIBLE);
+                all_cat_layout.setVisibility(View.GONE);
+
+                Query query = mDatabase.child("products").child("allItem").orderByChild("name").startAt(item).endAt(item+"\uf8ff");
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                if (!dataSnapshot.exists()){ allUploads.clear(); }
+
+                                if (!item.equals("")){
+
+                                    if (item.equals("all")||item.equals("total")||item.equals("full")||item.equals("all item")){
+
+
+         mDatabase.child("products").child("allItem").addListenerForSingleValueEvent(new ValueEventListener() {
+             @Override
+             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                 allUploads.clear();
+                 for (DataSnapshot a : dataSnapshot.getChildren()) {
+                     Uttam item = a.getValue(Uttam.class);
+                     Objects.requireNonNull(item).setKey(a.getKey());
+                     allUploads.add(item);
+                 }
+                 allAdapter.notifyDataSetChanged();
+
+             }
+
+             @Override
+             public void onCancelled(DatabaseError databaseError) {
+
+             }
+         });
+
+
+                                    }else {
+
+                                        allUploads.clear();
+                                        for (DataSnapshot a : dataSnapshot.getChildren()) {
+                                            Uttam item = a.getValue(Uttam.class);
+                                            Objects.requireNonNull(item).setKey(a.getKey());
+                                            allUploads.add(item);
+                                        }
+                                        allAdapter.notifyDataSetChanged();
+
+                                    }
+
+
+
+                                }
+
+
+
+
+
+
+
+
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+            }
+        });
+
+
     }
 
 
@@ -683,20 +821,26 @@ public class KotActivity extends AppCompatActivity implements
         LinearLayout main_cat_section = findViewById(R.id.main_cat_section);
         LinearLayout sub_category_llayout = findViewById(R.id.sub_category_llayout);
 
-        if (main_cat_section.getVisibility()==View.GONE){
-            main_cat_section.setVisibility(View.VISIBLE);
-            sub_category_llayout.setVisibility(View.GONE);
+        if (search_layout.getVisibility()==View.VISIBLE){
+            search_layout.setVisibility(View.GONE);
+            all_cat_layout.setVisibility(View.VISIBLE);
+            item_search.getText().clear();
+            item_search.clearFocus();
 
         }else {
 
-            Intent first = new Intent(KotActivity.this, FirstActivity.class);
-            startActivity(first);
-            overridePendingTransition(R.anim.b2t_enter, R.anim.t2exit );
+            if (main_cat_section.getVisibility()==View.GONE){
+                main_cat_section.setVisibility(View.VISIBLE);
+                sub_category_llayout.setVisibility(View.GONE);
 
-            finish();
+            }else {
+                Intent first = new Intent(KotActivity.this, FirstActivity.class);
+                startActivity(first);
+                overridePendingTransition(R.anim.b2t_enter, R.anim.t2exit );
+                finish();
+            }
 
         }
-
 
 
     }
@@ -706,94 +850,36 @@ public class KotActivity extends AppCompatActivity implements
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
-    public void onItemClickKot(int position) {
+    public void onItemClickInvoice(int position) {
 
         Uttam clickItem = nUploads.get(position);
         final String ruma = clickItem.getKey();
 
-      //  Toast.makeText(KotActivity.this, ruma, Toast.LENGTH_SHORT).show();
 
         AlertDialog.Builder alert = new AlertDialog.Builder(KotActivity.this);
-
         alert.setMessage("Please Choose Any Button From Below");
-        alert.setTitle("Tech Guru");
-        alert.setCancelable(false);
+        alert.setTitle(R.string.smi);
 
         alert.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
 
                 dialog.dismiss();
-
             }
         }).setNegativeButton("Edit", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(final DialogInterface dialog, int i) {
+                Intent intent = new Intent(KotActivity.this, EditInvoiceItemActivity.class);
+                intent.putExtra("tableName",tableName);
+                intent.putExtra("key",ruma);
+                startActivity(intent);
 
                 dialog.dismiss();
-
-
             }
         }).setNeutralButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(final DialogInterface dialog, int which) {
-
-
-
 
                 mDatabase.child("uttam").child(tableName).child(ruma).removeValue()
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -801,7 +887,6 @@ public class KotActivity extends AppCompatActivity implements
                             public void onComplete(@NonNull Task<Void> task) {
 
                                 if (task.isSuccessful()){
-
                                     dialog.dismiss();
                                 }
                             }
@@ -811,13 +896,6 @@ public class KotActivity extends AppCompatActivity implements
         });
 
         alert.show();
-
-
-
-
-
-
-
 
     }
 
@@ -904,14 +982,14 @@ public class KotActivity extends AppCompatActivity implements
     public void onItemClickRice(int position) {
 
 
-
         LinearLayout main_cat_section = findViewById(R.id.main_cat_section);
         LinearLayout sub_category_llayout = findViewById(R.id.sub_category_llayout);
         String catName = ((TextView) rRecyclerView.findViewHolderForAdapterPosition(position).itemView.findViewById(R.id.category_name)).getText().toString();
         main_cat_section.setVisibility(View.GONE);
         sub_category_llayout.setVisibility(View.VISIBLE);
 
-        cateName = "Rice"; subCateName = catName;
+        cateName = "Rice";
+        subCateName = catName;
 
         mDatabase.child("products")
                 .child("head")
@@ -929,63 +1007,12 @@ public class KotActivity extends AppCompatActivity implements
                         }
                         subAdapter.notifyDataSetChanged();
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
-
-
-
-
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Override
@@ -1018,17 +1045,32 @@ public class KotActivity extends AppCompatActivity implements
 
                             String price = Objects.requireNonNull(dataSnapshot.child(tableName).child(rp).child("price").getValue()).toString();
                             String countP = Objects.requireNonNull(dataSnapshot.child(tableName).child(rp).child("count").getValue()).toString();
+                            String tax = Objects.requireNonNull(dataSnapshot.child(tableName).child(rp).child("tax").getValue()).toString();
+
 
                             if (countP.equals("")){
 
                                 int price2 = Integer.parseInt(price);
                                 int countP2 = 2;
-
                                 int three = price2*countP2;
 
                                 String totalPrice = String.valueOf(three);
 
-                                mDatabase.child("uttam").child(tableName).child(rp).child("price2").setValue(totalPrice);
+                                double p1 = (double) three;
+                                double t1 =  Double.parseDouble(tax);
+                                double p2 =  ((p1*100)/(100+t1));
+
+
+                                @SuppressLint("DefaultLocale")
+                                String price3 = String.format("%.2f", p2);
+
+                                HashMap<String, Object> map = new HashMap<>();
+                                map.put("price2", totalPrice);
+                                //map.put("price3", price3);
+
+                                mDatabase.child("uttam").child(tableName).child(rp).updateChildren(map);
+
+
 
                             }else {
 
@@ -1039,7 +1081,19 @@ public class KotActivity extends AppCompatActivity implements
 
                                 String totalPrice = String.valueOf(three);
 
-                                mDatabase.child("uttam").child(tableName).child(rp).child("price2").setValue(totalPrice);
+                                double p1 = (double) three;
+                                double t1 =  Double.parseDouble(tax);
+                                double p2 =  ((p1*100)/(100+t1));
+
+                                @SuppressLint("DefaultLocale")
+                                String price3 = String.format("%.2f", p2);
+
+                                HashMap<String, Object> map2 = new HashMap<>();
+                                map2.put("price2", totalPrice);
+                                //map2.put("price3", price3);
+
+                                mDatabase.child("uttam").child(tableName).child(rp).updateChildren(map2);
+
 
                             }
 
@@ -1050,10 +1104,233 @@ public class KotActivity extends AppCompatActivity implements
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                                            String price = Objects.requireNonNull(dataSnapshot.child("price").getValue()).toString();
+                                            String tax = Objects.requireNonNull(dataSnapshot.child("tax").getValue()).toString();
+
+
+                                            double p1 =  Double.parseDouble(price);
+                                            double t1 =  Double.parseDouble(tax);
+                                            double p2 =  ((p1*100)/(100+t1));
+
+                                            @SuppressLint("DefaultLocale")
+                                            String price3 = String.format("%.2f", p2);
+
+                                            HashMap<String, Object> map3 = new HashMap<>();
+                                            map3.put("price2", Objects.requireNonNull(dataSnapshot.child("price").getValue()).toString());
+                                            //map3.put("price3", price3);
+
                                             Uttam upload = dataSnapshot.getValue(Uttam.class);
                                             mDatabase.child("uttam").child(tableName).child(rp).setValue(upload);
-                                            mDatabase.child("uttam").child(tableName).child(rp).child("price2").setValue(dataSnapshot.child("price").getValue());
-                                            // mDatabase.child("uttam").setValue(dataSnapshot.getValue());
+                                            mDatabase.child("uttam").child(tableName).child(rp).updateChildren(map3);
+
+
+
+                                        }
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+                                        }
+                                    });
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+        mDatabase.child("uttam").child(tableName).child(rp)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        if (dataSnapshot.child("tax").exists()){
+
+                            String tax = Objects.requireNonNull(dataSnapshot.child("tax").getValue()).toString();
+                            String price = Objects.requireNonNull(dataSnapshot.child("price").getValue()).toString();
+                            String count = Objects.requireNonNull(dataSnapshot.child("count").getValue()).toString();
+
+                            if (count.equals("")){
+
+                                double p =  Double.parseDouble(price);
+
+                                double t1 =  Double.parseDouble(tax);
+
+                                double p3 =  ((p*100)/(100+t1));
+
+                                @SuppressLint("DefaultLocale")
+                                String price3 = String.format("%.2f", p3);
+
+                                mDatabase.child("uttam").child(tableName).child(rp)
+                                        .child("price3").setValue(price3);
+
+                            }else {
+
+                                double p =  Double.parseDouble(price);
+                                double c =  Double.parseDouble(count);
+
+                                double t = p*c;
+                                double t1 =  Double.parseDouble(tax);
+
+                                double p3 =  ((t*100)/(100+t1));
+
+                                @SuppressLint("DefaultLocale")
+                                String price3 = String.format("%.2f", p3);
+
+                                mDatabase.child("uttam").child(tableName).child(rp)
+                                        .child("price3").setValue(price3);
+                            }
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if (!waiterName.equals("")){
+
+            mDatabase.child("uttam")
+                    .child("waiter")
+                    .child(tableName)
+                    .setValue(waiterName);
+
+        }
+
+
+
+
+
+
+
+    }
+
+
+    @Override
+    public void onAllItemClick(int position) {
+
+
+        Uttam clickItem = allUploads.get(position);
+        final String rp = clickItem.getKey();
+
+
+
+        mDatabase.child("uttam")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        if (dataSnapshot.child(tableName).child(rp).exists()){
+
+
+                            String count = Objects.requireNonNull(dataSnapshot.child(tableName).child(rp).child("count").getValue()).toString();
+
+                            if (count.equals("")){
+                                int countPlus = 2;
+                                String totalCount = String.valueOf(countPlus);
+                                mDatabase.child("uttam").child(tableName).child(rp).child("count").setValue(totalCount);
+
+                            }else {
+                                int countt = Integer.parseInt(count);
+                                int countPlus = countt+1;
+                                String totalCount = String.valueOf(countPlus);
+                                mDatabase.child("uttam").child(tableName).child(rp).child("count").setValue(totalCount);
+                            }
+
+                            String price = Objects.requireNonNull(dataSnapshot.child(tableName).child(rp).child("price").getValue()).toString();
+                            String countP = Objects.requireNonNull(dataSnapshot.child(tableName).child(rp).child("count").getValue()).toString();
+                            String tax = Objects.requireNonNull(dataSnapshot.child(tableName).child(rp).child("tax").getValue()).toString();
+
+                            if (countP.equals("")){
+
+                                int price2 = Integer.parseInt(price);
+                                int countP2 = 2;
+                                int three = price2*countP2;
+
+                                String totalPrice = String.valueOf(three);
+
+                                double p1 = (double) three;
+                                double t1 =  Double.parseDouble(tax);
+                                double p2 =  ((p1*100)/(100+t1));
+
+                                @SuppressLint("DefaultLocale")
+                                String price3 = String.format("%.2f", p2);
+
+                                HashMap<String, Object> map = new HashMap<>();
+                                map.put("price2", totalPrice);
+                                //map.put("price3", price3);
+
+                                mDatabase.child("uttam").child(tableName).child(rp).updateChildren(map);
+
+                            }else {
+
+                                int price2 = Integer.parseInt(price);
+                                int countP2 = Integer.parseInt(countP);
+
+                                int three = price2*(countP2+1);
+
+                                String totalPrice = String.valueOf(three);
+
+                                double p1 = (double) three;
+                                double t1 =  Double.parseDouble(tax);
+                                double p2 =  ((p1*100)/(100+t1));
+
+                                @SuppressLint("DefaultLocale")
+                                String price3 = String.format("%.2f", p2);
+
+                                HashMap<String, Object> map2 = new HashMap<>();
+                                map2.put("price2", totalPrice);
+                                //map2.put("price3", price3);
+
+                                mDatabase.child("uttam").child(tableName).child(rp).updateChildren(map2);
+                            }
+
+                        }else {
+                            mDatabase.child("products").child("allItem")
+                                    .child(rp)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                            String price = Objects.requireNonNull(dataSnapshot.child("price").getValue()).toString();
+                                            String tax = Objects.requireNonNull(dataSnapshot.child("tax").getValue()).toString();
+
+                                            double p1 =  Double.parseDouble(price);
+                                            double t1 =  Double.parseDouble(tax);
+                                            double p2 =  ((p1*100)/(100+t1));
+
+                                            @SuppressLint("DefaultLocale")
+                                            String price3 = String.format("%.2f", p2);
+
+                                            HashMap<String, Object> map3 = new HashMap<>();
+                                            map3.put("price2", Objects.requireNonNull(dataSnapshot.child("price").getValue()).toString());
+                                            //map3.put("price3", price3);
+
+                                            Uttam upload = dataSnapshot.getValue(Uttam.class);
+                                            mDatabase.child("uttam").child(tableName).child(rp).setValue(upload);
+                                            mDatabase.child("uttam").child(tableName).child(rp).updateChildren(map3);
+
                                         }
                                         @Override
                                         public void onCancelled(DatabaseError databaseError) {
@@ -1082,9 +1359,57 @@ public class KotActivity extends AppCompatActivity implements
 
 
 
+        mDatabase.child("uttam").child(tableName).child(rp)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
+                        if (dataSnapshot.child("tax").exists()){
 
+                            String tax = Objects.requireNonNull(dataSnapshot.child("tax").getValue()).toString();
+                            String price = Objects.requireNonNull(dataSnapshot.child("price").getValue()).toString();
+                            String count = Objects.requireNonNull(dataSnapshot.child("count").getValue()).toString();
 
+                            if (count.equals("")){
+
+                                double p =  Double.parseDouble(price);
+
+                                double t1 =  Double.parseDouble(tax);
+
+                                double p3 =  ((p*100)/(100+t1));
+
+                                @SuppressLint("DefaultLocale")
+                                String price3 = String.format("%.2f", p3);
+
+                                mDatabase.child("uttam").child(tableName).child(rp)
+                                        .child("price3").setValue(price3);
+
+                            }else {
+
+                                double p =  Double.parseDouble(price);
+                                double c =  Double.parseDouble(count);
+
+                                double t = p*c;
+                                double t1 =  Double.parseDouble(tax);
+
+                                double p3 =  ((t*100)/(100+t1));
+
+                                @SuppressLint("DefaultLocale")
+                                String price3 = String.format("%.2f", p3);
+
+                                mDatabase.child("uttam").child(tableName).child(rp)
+                                        .child("price3").setValue(price3);
+                            }
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
 
 
@@ -1092,20 +1417,6 @@ public class KotActivity extends AppCompatActivity implements
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

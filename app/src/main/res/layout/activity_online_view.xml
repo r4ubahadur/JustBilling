@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -9,6 +9,7 @@
 
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -120,31 +121,30 @@
 
     </ScrollView>
 
+
+
     <LinearLayout
-        android:gravity="end"
-        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_gravity="bottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="35dp">
 
         <LinearLayout
-            android:layout_marginTop="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <Button
+                android:id="@+id/print_btn"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
-                android:fontFamily="@font/archivo_black"
                 android:text="Print"
                 android:textColor="#fff" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="3dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -153,15 +153,27 @@
                 android:text="Open Table"
                 android:textColor="#fff"
                 android:background="@color/colorPrimary"
-                android:fontFamily="@font/archivo_black"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
 
+    <LinearLayout
+        android:layout_marginStart="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/next_bill"
+            android:text="Next"
+            android:textColor="#fff"
+            android:background="@color/colorPrimary"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
     </LinearLayout>
 
 
-
-
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

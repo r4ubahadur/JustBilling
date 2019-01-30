@@ -61,7 +61,7 @@ import in.smi.ru.uttamlibrary.Uttam;
 public class ItemUploadActivity extends AppCompatActivity {
 
 
-    private String product_type, item_type, image="image";
+    private String product_type, item_type;
 
 
     List<String> brandNames = new ArrayList<>();
@@ -82,9 +82,9 @@ public class ItemUploadActivity extends AppCompatActivity {
 
     private StorageTask mUploadTask;
     private StorageReference mStorageRef;
-    private DatabaseReference mDatabaseRef;
+    private DatabaseReference mDatabaseRef, mDatabase2;
 
-    private EditText itemBrand, itemColor, itemCount, itemDesc, itemExpiry, itemName, itemPrice, itemSize;
+    private EditText itemBrand, itemColor, itemCount, itemDesc, itemExpiry, itemName, itemPrice, itemTax, itemSize;
 
     private DatePicker datePicker;
     private Calendar calendar;
@@ -139,10 +139,12 @@ public class ItemUploadActivity extends AppCompatActivity {
         itemExpiry= findViewById(R.id.itemExpiry);
         itemName = findViewById(R.id.itemName);
         itemPrice= findViewById(R.id.itemPrice);
+        itemTax= findViewById(R.id.itemTax);
         itemSize= findViewById(R.id.itemSize);
 
 
 
+        mDatabase2 = FirebaseDatabase.getInstance().getReference().child("products").child("allItem");
         mStorageRef = FirebaseStorage.getInstance().getReference().child("products").child("head").child(product_type).child("category").child(item_type);
         mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("products").child("head").child(product_type).child("category").child(item_type);
 
@@ -196,6 +198,7 @@ public class ItemUploadActivity extends AppCompatActivity {
         final LinearLayout exDateDetails= findViewById(R.id.exDateDetails);
         final LinearLayout nameDetails= findViewById(R.id.nameDetails);
         final LinearLayout priceDetails= findViewById(R.id.priceDetails);
+        final LinearLayout taxDetails= findViewById(R.id.taxDetails);
         final LinearLayout sizeDetails= findViewById(R.id.sizeDetails);
 
         final Spinner brandSpinner = findViewById(R.id.brandSpinner);
@@ -273,15 +276,6 @@ public class ItemUploadActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
               //  String color = Objects.requireNonNull(dataSnapshot.child("color").getValue()).toString();
 
-
-
-
-
-
-
-
-
-
                 if (dataSnapshot.child("brandName").getValue()!=null){
                     brandName.setVisibility(View.VISIBLE);
                 }else {
@@ -339,6 +333,16 @@ public class ItemUploadActivity extends AppCompatActivity {
                 }
 
 
+
+                if (dataSnapshot.child("tax").getValue()!=null){
+                    taxDetails.setVisibility(View.VISIBLE);
+                }else {
+                    taxDetails.setVisibility(View.GONE);
+                }
+
+
+
+
                 if (dataSnapshot.child("size").getValue()!=null){
                     sizeDetails.setVisibility(View.VISIBLE);
                 }else {
@@ -366,6 +370,7 @@ public class ItemUploadActivity extends AppCompatActivity {
                 CheckBox itemCatCheck = findViewById(R.id.itemCatCheck);
                 CheckBox itemNameCheck = findViewById(R.id.itemNameCheck);
                 CheckBox itemPriceCheck = findViewById(R.id.itemPriceCheck);
+                CheckBox itemTaxCheck = findViewById(R.id.itemTaxCheck);
                 CheckBox itemColorCheck = findViewById(R.id.itemColorCheck);
                 CheckBox itemSizeCheck = findViewById(R.id.itemSizeCheck);
                 CheckBox itemBrandNameCheck = findViewById(R.id.itemBrandNameCheck);
@@ -408,6 +413,17 @@ public class ItemUploadActivity extends AppCompatActivity {
                     itemPriceCheck.setChecked(false);
                     itemPriceCheck.setTypeface(null, Typeface.NORMAL);
                 }
+
+
+                if (dataSnapshot.child("tax").getValue()!=null){
+                    itemTaxCheck.setChecked(true);
+                    itemTaxCheck.setTypeface(itemTaxCheck.getTypeface(), Typeface.BOLD_ITALIC);
+                }else{
+                    itemTaxCheck.setChecked(false);
+                    itemTaxCheck.setTypeface(null, Typeface.NORMAL);
+                }
+
+
                 if (dataSnapshot.child("color").getValue()!=null){
                     itemColorCheck.setChecked(true);
                     itemColorCheck.setTypeface(itemColorCheck.getTypeface(), Typeface.BOLD_ITALIC);
@@ -799,6 +815,7 @@ public class ItemUploadActivity extends AppCompatActivity {
                                         itemExpiry.getText().toString().trim(),
                                         itemName.getText().toString().trim(),
                                         itemPrice.getText().toString().trim(),
+                                        itemTax.getText().toString().trim(),
                                         itemSize.getText().toString().trim()
                                 );
 
@@ -833,7 +850,7 @@ public class ItemUploadActivity extends AppCompatActivity {
 
                                                                         if (task.isSuccessful()){
 
-                                                                            mDatabaseRef.child(uploadId).child("id").setValue(ServerValue.TIMESTAMP);
+                                                                           // mDatabaseRef.child(uploadId).child("id").setValue(ServerValue.TIMESTAMP);
 
                                                                             mProgressDialog.dismiss();
 
@@ -897,15 +914,16 @@ public class ItemUploadActivity extends AppCompatActivity {
             mProgressDialog.show();
 
             // Toast.makeText(ItemUploadActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
-            Uttam upload = new Uttam(
+            final Uttam upload = new Uttam(
                     "image","image",
                     itemBrand.getText().toString().trim(),
                     itemColor.getText().toString().trim(),
                     itemCount.getText().toString().trim(),
                     itemDesc.getText().toString().trim(),
                     itemExpiry.getText().toString().trim(),
-                    itemName.getText().toString().trim(),
+                    itemName.getText().toString().trim().toLowerCase(),
                     itemPrice.getText().toString().trim(),
+                    itemTax.getText().toString().trim(),
                     itemSize.getText().toString().trim()
                                 );
 
@@ -920,7 +938,10 @@ public class ItemUploadActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Void> task) {
 
                     if (task.isSuccessful()){
-                        mDatabaseRef.child(uploadId).child("id").setValue(ServerValue.TIMESTAMP);
+
+
+                        mDatabase2.child(uploadId).setValue(upload);
+                      //  mDatabaseRef.child(uploadId).child("id").setValue(ServerValue.TIMESTAMP);
                         mProgressDialog.dismiss();
 
                         AlertDialog.Builder alert = new AlertDialog.Builder(ItemUploadActivity.this);
@@ -957,6 +978,7 @@ public class ItemUploadActivity extends AppCompatActivity {
         final CheckBox itemNameCheck = findViewById(R.id.itemNameCheck);
         final CheckBox itemCatCheck = findViewById(R.id.itemCatCheck);
         final CheckBox itemPriceCheck = findViewById(R.id.itemPriceCheck);
+        final CheckBox itemTaxCheck = findViewById(R.id.itemTaxCheck);
         final CheckBox itemColorCheck = findViewById(R.id.itemColorCheck);
         final CheckBox itemSizeCheck = findViewById(R.id.itemSizeCheck);
         final CheckBox itemBrandNameCheck = findViewById(R.id.itemBrandNameCheck);
@@ -1051,6 +1073,54 @@ public class ItemUploadActivity extends AppCompatActivity {
                     });
                 }
                 break;
+
+
+
+
+            case R.id.itemTaxCheck:
+                if (checked){
+
+
+                    productProgressBar.setVisibility(View.VISIBLE);
+                    updateBtn.setVisibility(View.INVISIBLE);
+                    mData.child("tax").setValue("itemTax").addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                itemTaxCheck.setTypeface(itemTaxCheck.getTypeface(), Typeface.BOLD_ITALIC);
+                                productProgressBar.setVisibility(View.GONE);
+                                updateBtn.setVisibility(View.VISIBLE);
+
+                            }else {
+                                itemTaxCheck.setTypeface(null, Typeface.NORMAL);
+                                productProgressBar.setVisibility(View.INVISIBLE);
+                            }
+
+                        }
+                    });
+                }
+                else{
+                    updateBtn.setVisibility(View.INVISIBLE);
+                    productProgressBar.setVisibility(View.VISIBLE);
+                    itemTaxCheck.setTypeface(null, Typeface.NORMAL);
+                    mData.child("tax").removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            updateBtn.setVisibility(View.VISIBLE);
+                            productProgressBar.setVisibility(View.GONE);
+
+                        }
+                    });
+                }
+                break;
+
+
+
+
+
+
+
+
 
 
             case R.id.itemColorCheck:

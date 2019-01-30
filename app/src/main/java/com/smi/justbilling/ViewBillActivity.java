@@ -80,10 +80,17 @@ public class ViewBillActivity extends AppCompatActivity {
 
 
 
+    }
 
+    @Override
+    public void onBackPressed() {
 
+        super.onBackPressed();
 
-
+        Intent first = new Intent(ViewBillActivity.this, ManagementActivity.class);
+        startActivity(first);
+        overridePendingTransition( R.anim.b2t_enter,  R.anim.t2exit);
+        finish();
 
 
     }

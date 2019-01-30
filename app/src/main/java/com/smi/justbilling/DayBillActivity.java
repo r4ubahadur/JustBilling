@@ -75,10 +75,13 @@ public class DayBillActivity extends AppCompatActivity {
                 billNo = (String) viewBill.getItemAtPosition(position);
 
 
+                String bill_no = billNo.replaceAll("SMI-18-19-", "");
+
                 Intent goToDate = new Intent(DayBillActivity.this, OnlineViewActivity.class);
                 goToDate.putExtra("billNo" , billNo);
                 goToDate.putExtra("date", date);
                 startActivity(goToDate);
+                finish();
 
 
 
