@@ -174,7 +174,7 @@ public class KotActivity extends AppCompatActivity implements
 
        // mDatabase.keepSynced(true);
 
-        mDatabase.child("uttam").child(tableName).addValueEventListener(new ValueEventListener() {
+        mDatabase.child("uttam").child(tableName).orderByChild("time").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 nUploads.clear();
@@ -1118,6 +1118,8 @@ public class KotActivity extends AppCompatActivity implements
                                             String price3 = String.format("%.2f", p2);
 
                                             HashMap<String, Object> map3 = new HashMap<>();
+
+                                            map3.put("time", ServerValue.TIMESTAMP);
                                             map3.put("price2", Objects.requireNonNull(dataSnapshot.child("price").getValue()).toString());
                                             //map3.put("price3", price3);
 
@@ -1324,6 +1326,7 @@ public class KotActivity extends AppCompatActivity implements
                                             String price3 = String.format("%.2f", p2);
 
                                             HashMap<String, Object> map3 = new HashMap<>();
+                                            map3.put("time", ServerValue.TIMESTAMP);
                                             map3.put("price2", Objects.requireNonNull(dataSnapshot.child("price").getValue()).toString());
                                             //map3.put("price3", price3);
 
