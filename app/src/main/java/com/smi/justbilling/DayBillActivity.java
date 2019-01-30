@@ -1,6 +1,7 @@
 package com.smi.justbilling;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -81,12 +82,27 @@ public class DayBillActivity extends AppCompatActivity {
                 goToDate.putExtra("billNo" , billNo);
                 goToDate.putExtra("date", date);
                 startActivity(goToDate);
+                overridePendingTransition( R.anim.r2l_enter,  R.anim.l2exit);
                 finish();
 
 
 
             }
         });
+
+
+        FloatingActionButton back_bill = findViewById(R.id.back_bill);
+        back_bill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent first = new Intent(DayBillActivity.this, ViewBillActivity.class);
+                startActivity(first);
+                overridePendingTransition( R.anim.l2r_enter,  R.anim.r2exit);
+                finish();
+            }
+        });
+
+
 
 
 

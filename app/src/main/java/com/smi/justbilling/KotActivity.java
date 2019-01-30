@@ -476,48 +476,58 @@ public class KotActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
 
-
-
-                //time
-
-                mDatabase.child("date").child("servervalue").setValue(ServerValue.TIMESTAMP)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                mDatabase.child("uttam").child(tableName)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()){
 
-                                    mDatabase.child("date").child("servervalue").addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            if (dataSnapshot.exists()) {
-                                                String timestamp = Objects.requireNonNull(dataSnapshot.getValue()).toString();   // use ms NOT s
-                                                SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyy");
-                                                SimpleDateFormat specialDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                                                date = dateFormat.format(new Date(Long.parseLong(timestamp)));
-                                                specialDate = specialDateFormat.format(new Date(Long.parseLong(timestamp)));
+                                    mDatabase.child("date").child("servervalue").setValue(ServerValue.TIMESTAMP)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
 
-                                                Intent abc = new Intent(KotActivity.this, KotPrintActivity.class);
-                                                abc.putExtra("waiterName", waiterName);
-                                                abc.putExtra("tableName", tableName);
-                                                abc.putExtra("tableNumber", tableNumber);
-                                                abc.putExtra("date", date);
-                                                abc.putExtra("kotNumber", currentKotNumber);
-                                                abc.putExtra("specialDate", specialDate);
-                                                startActivity(abc);
-                                            }
-                                        }
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-                                            }
-                                    });
+                                                        mDatabase.child("date").child("servervalue").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                if (dataSnapshot.exists()) {
+                                                                    String timestamp = Objects.requireNonNull(dataSnapshot.getValue()).toString();   // use ms NOT s
+                                                                    SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyy");
+                                                                    SimpleDateFormat specialDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                                                    date = dateFormat.format(new Date(Long.parseLong(timestamp)));
+                                                                    specialDate = specialDateFormat.format(new Date(Long.parseLong(timestamp)));
+
+                                                                    Intent abc = new Intent(KotActivity.this, KotPrintActivity.class);
+                                                                    abc.putExtra("waiterName", waiterName);
+                                                                    abc.putExtra("tableName", tableName);
+                                                                    abc.putExtra("tableNumber", tableNumber);
+                                                                    abc.putExtra("date", date);
+                                                                    abc.putExtra("kotNumber", currentKotNumber);
+                                                                    abc.putExtra("specialDate", specialDate);
+                                                                    startActivity(abc);
+                                                                }
+                                                            }
+                                                            @Override
+                                                            public void onCancelled(DatabaseError databaseError) {
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            });
+
+                                }else {
+
+                                    Toast.makeText(KotActivity.this, "No Item Selected", Toast.LENGTH_SHORT).show();
+
                                 }
                             }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
                         });
-
-
-                //time
-
-
 
             }
         });
@@ -790,6 +800,43 @@ public class KotActivity extends AppCompatActivity implements
         });
 
 
+
+        FloatingActionButton back_kot_home = findViewById(R.id.back_kot_home);
+        back_kot_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                LinearLayout main_cat_section = findViewById(R.id.main_cat_section);
+                LinearLayout sub_category_llayout = findViewById(R.id.sub_category_llayout);
+
+                if (search_layout.getVisibility()==View.VISIBLE){
+                    search_layout.setVisibility(View.GONE);
+                    all_cat_layout.setVisibility(View.VISIBLE);
+                    item_search.getText().clear();
+                    item_search.clearFocus();
+
+                }else {
+
+                    if (main_cat_section.getVisibility()==View.GONE){
+                        main_cat_section.setVisibility(View.VISIBLE);
+                        sub_category_llayout.setVisibility(View.GONE);
+
+                    }else {
+                        Intent first = new Intent(KotActivity.this, FirstActivity.class);
+                        startActivity(first);
+                        overridePendingTransition(R.anim.b2t_enter, R.anim.t2exit );
+                        finish();
+                    }
+
+                }
+
+            }
+        });
+
+
+
+
+
     }
 
 
@@ -971,9 +1018,6 @@ public class KotActivity extends AppCompatActivity implements
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
-
-
-
 
 
     }
@@ -1199,18 +1243,6 @@ public class KotActivity extends AppCompatActivity implements
                 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
         if (!waiterName.equals("")){
 
             mDatabase.child("uttam")
@@ -1219,11 +1251,6 @@ public class KotActivity extends AppCompatActivity implements
                     .setValue(waiterName);
 
         }
-
-
-
-
-
 
 
     }

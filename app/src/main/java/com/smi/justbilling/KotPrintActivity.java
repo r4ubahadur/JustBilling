@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -149,6 +150,19 @@ public class KotPrintActivity extends AppCompatActivity implements KotAdapter.On
 
             }
         });
+
+
+        FloatingActionButton print_back = findViewById(R.id.print_back);
+        print_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.l2r_enter, R.anim.r2exit );
+            }
+        });
+
+
+
 
 
 

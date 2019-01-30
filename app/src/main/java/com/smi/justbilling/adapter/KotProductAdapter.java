@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.smi.justbilling.R;
 
@@ -41,6 +42,10 @@ public class KotProductAdapter extends RecyclerView.Adapter<KotProductAdapter.Im
         holder.textViewName.setText(upload.getName().toUpperCase());
         holder.textViewPrice.setText("₹ "+upload.getPrice3());
 
+
+        holder.textViewCount.setTag(upload.getKey());
+
+
         String count = upload.getCount();
         if (count.equals("")){
 
@@ -65,42 +70,29 @@ public class KotProductAdapter extends RecyclerView.Adapter<KotProductAdapter.Im
             }
 
         }catch (Exception e){
-
             holder.textViewGst.setText("CGST "+"@ "+"0.0"+"% " + " + SGST " + "@ "+"0.0"+"%");
-
         }
 
 
-
-
-
-        /*
-
-        Picasso.with(mContext)
-                .load(upload.getThumbImageUrl())
-                .placeholder(R.drawable.purchase_icon)
-                .fit()
-                .centerCrop()
-               // .networkPolicy(NetworkPolicy.OFFLINE)
-                .into(holder.imageView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-                });
-
-        */
-
         holder.textViewName.setSelected(true);
 
-
-
        // if(position == getItemCount() - 1){ holder.textViewName.setVisibility(View.INVISIBLE); }
+
+
+        holder.textViewCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String key = holder.textViewCount.getTag().toString();
+
+                Toast.makeText(mContext, key, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+
+
 
 
 
@@ -181,12 +173,9 @@ public class KotProductAdapter extends RecyclerView.Adapter<KotProductAdapter.Im
 
     public interface OnItemClickListenerInvoice {
         void onItemClickInvoice(int position);
-
-
     }
 
     public interface OnItemLongClickListener {
-
         void onItemLongClick(int position);
     }
 

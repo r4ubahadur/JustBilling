@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,23 +9,6 @@
     tools:context=".ViewBillActivity">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.v7.widget.SearchView
-            android:id="@+id/searchView"
-            android:inputType="none"
-            android:clickable="false"
-            android:longClickable="false"
-            android:focusableInTouchMode="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </android.support.v7.widget.SearchView>
-
-
-    </LinearLayout>
 
 
     <ListView
@@ -36,4 +19,14 @@
     </ListView>
 
 
-</LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/back_bill2"
+        android:layout_width="wrap_content"
+        android:theme="@style/print_floating"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_back" />
+
+
+</android.support.design.widget.CoordinatorLayout>
