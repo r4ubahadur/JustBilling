@@ -58,7 +58,15 @@ public class BillSingleItemAdapter extends RecyclerView.Adapter<BillSingleItemAd
         if (upload.getPrice2().equals("")){
             holder.totalPrice.setText("0.00");
         }else {
-            holder.totalPrice.setText(upload.getPrice2()+".00");
+
+            String total = upload.getPrice2();
+
+            double t = Double.parseDouble(total);
+
+            @SuppressLint("DefaultLocale")
+            String price2 = String.format("%.2f", t);
+
+            holder.totalPrice.setText(price2);
         }
 
 

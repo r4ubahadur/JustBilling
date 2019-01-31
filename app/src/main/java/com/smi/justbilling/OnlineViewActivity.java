@@ -57,7 +57,7 @@ public class OnlineViewActivity extends AppCompatActivity implements BillSingleI
     private Bitmap bitmap;
 
     private ScrollView scrollView2;
-    private Button print_btn, next_bill;
+    private Button print_btn, next_bill, back_btn;
 
     private String ran, ran2, ran3, fileName, random,random2,random3, filePath = "/sdcard/silicon/Data/pdf/", silicon = "/silicon/Data/pdf";
 
@@ -76,6 +76,9 @@ public class OnlineViewActivity extends AppCompatActivity implements BillSingleI
 
         bill_number = findViewById(R.id.bill_number);
         billTotalAmount = findViewById(R.id.billTotalAmount);
+
+
+        back_btn = findViewById(R.id.back_btn);
 
         scrollView2 = findViewById(R.id.scrollView2);
 
@@ -116,15 +119,17 @@ public class OnlineViewActivity extends AppCompatActivity implements BillSingleI
                             bill_number.setText("Bill No:- " + billNo);
 
 
-                            int sum = 0;
+                            double sum = 0;
+                            String total = "0.00";
                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
                                 Map<String, Object> map = (Map<String, Object>) ds.getValue();
                                 Object price = map.get("price2");
-                                int value = Integer.parseInt(String.valueOf(price));
+                                double value = Double.parseDouble(String.valueOf(price));
                                 sum = +sum + value;
+                                total = String.format("%.2f", sum);
                             }
-                            billTotalAmount.setText("₹ " + String.valueOf(sum)+".00");
+                            billTotalAmount.setText("₹ " + String.valueOf(total));
 
 
                         }
@@ -198,10 +203,13 @@ public class OnlineViewActivity extends AppCompatActivity implements BillSingleI
             }
         });
 
-
-
-
-
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition( R.anim.l2r_enter,  R.anim.r2exit);
+            }
+        });
 
 
     }

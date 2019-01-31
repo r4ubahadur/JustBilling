@@ -135,7 +135,7 @@
 
             <Button
                 android:id="@+id/print_btn"
-                android:layout_width="150dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:text="Print"
@@ -153,25 +153,42 @@
                 android:text="Open Table"
                 android:textColor="#fff"
                 android:background="@color/colorPrimary"
-                android:layout_width="150dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
 
-    <LinearLayout
-        android:layout_marginStart="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/next_bill"
-            android:text="Next"
-            android:textColor="#fff"
-            android:background="@color/colorPrimary"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/next_bill"
+                android:text="Next"
+                android:textColor="#fff"
+                android:background="@color/colorPrimary"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content" />
 
-    </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/back_btn"
+                android:text="Back"
+                android:textColor="#fff"
+                android:background="@color/colorPrimary"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+
 
     </LinearLayout>
 

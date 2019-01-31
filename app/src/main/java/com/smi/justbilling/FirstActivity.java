@@ -258,16 +258,10 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
                                     }
                                 });
 
-
                                 alertDialog.show();
 
 
-
-
-
-
                             }else {
-
 
                                 Intent first = new Intent(FirstActivity.this, KotActivity.class);
                                 first.putExtra("TableName", tableName);
@@ -284,10 +278,6 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
 
                         }
                     });
-
-
-
-
 
 
 

@@ -395,24 +395,26 @@
 
             </ScrollView>
 
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/sub_category_llayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/sub_category_layout"
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/sub_category_llayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            </android.support.v7.widget.RecyclerView>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/sub_category_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
+                </android.support.v7.widget.RecyclerView>
+
+
+            </LinearLayout>
 
         </LinearLayout>
+
+
+
 
 
         <android.support.design.widget.FloatingActionButton

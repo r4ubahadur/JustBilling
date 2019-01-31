@@ -85,7 +85,11 @@ public class KotProductAdapter extends RecyclerView.Adapter<KotProductAdapter.Im
 
                 String key = holder.textViewCount.getTag().toString();
 
-                Toast.makeText(mContext, key, Toast.LENGTH_SHORT).show();
+                if(mContext instanceof IMethodCaller){
+                    ((IMethodCaller)mContext).itemCount(key);
+                }
+
+
             }
         });
 
@@ -169,6 +173,7 @@ public class KotProductAdapter extends RecyclerView.Adapter<KotProductAdapter.Im
         }
 
 
+
     }
 
     public interface OnItemClickListenerInvoice {
@@ -180,17 +185,26 @@ public class KotProductAdapter extends RecyclerView.Adapter<KotProductAdapter.Im
     }
 
 
+    public interface IMethodCaller {
+        void itemCount(String text);
+
+    }
+
+
+
+
+
+
+
+
 
 
 
     public void setOnItemClickListener(OnItemClickListenerInvoice listener) {
-
         mListener = listener;
     }
 
-
     public void setOnItemLongClickListener(OnItemLongClickListener longListener) {
-
         mLongListener = longListener;
     }
 

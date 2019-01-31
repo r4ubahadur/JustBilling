@@ -51,6 +51,8 @@ import in.smi.ru.uttamlibrary.Uttam;
 
 public class KotActivity extends AppCompatActivity implements
        // SalesProductAdapter.OnItemClickListener,
+
+        KotProductAdapter.IMethodCaller,
         AllItemAdapter.OnAllItemClickListener,
         KotProductAdapter.OnItemClickListenerInvoice,
         DrinkAdapter.OnItemClickListenerDrink,
@@ -222,8 +224,6 @@ public class KotActivity extends AppCompatActivity implements
 
                             for(DataSnapshot ru : dataSnapshot.getChildren()) {
 
-
-
                                 Map<String,Object> map = (Map<String,Object>) ru.getValue();
 
                                 Object priceTwo = Objects.requireNonNull(map).get("price2");
@@ -240,26 +240,15 @@ public class KotActivity extends AppCompatActivity implements
                                     tax = sum2 - sum3;
                                 }
 
-                              //  if ()
-
-
-
-
-
                             }
 
                             TotalAmount.setText("₹ "+String.format("%.2f", sum2));
                             tax_total.setText("₹ "+String.format("%.2f", tax));
 
-
                         }else {
                             TotalAmount.setText("₹ 0.00");
                             tax_total.setText("₹ 0.00");
-
                         }
-
-
-
                     }
 
                     @Override
@@ -322,122 +311,146 @@ public class KotActivity extends AppCompatActivity implements
         processKey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDatabase.child("date").child("servervalue").setValue(ServerValue.TIMESTAMP)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+
+                mDatabase.child("uttam").child(tableName)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+                            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                if (task.isSuccessful()){
-
-                                    mDatabase.child("date").child("servervalue").addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                            if (dataSnapshot.exists()){
-                                                String timestamp = Objects.requireNonNull(dataSnapshot.getValue()).toString();   // use ms NOT s
-                                                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy" );
-                                                SimpleDateFormat extraDate = new SimpleDateFormat("dd" );
-                                                SimpleDateFormat extraMonth = new SimpleDateFormat("MM" );
-                                                SimpleDateFormat extraYear = new SimpleDateFormat("yyyy" );
-                                                SimpleDateFormat extraYearShortForm = new SimpleDateFormat("yy" );
-
-                                                date = dateFormat.format(new Date(Long.parseLong(timestamp)));
+                                if (dataSnapshot.exists()){
 
 
-                                                String exDate = extraDate.format(new Date(Long.parseLong(timestamp)));
-                                                String exMonth = extraMonth.format(new Date(Long.parseLong(timestamp)));
-                                                String exYear = extraYear.format(new Date(Long.parseLong(timestamp)));
-                                                String exYearShortForm = extraYearShortForm.format(new Date(Long.parseLong(timestamp)));
+                                    mDatabase.child("date").child("servervalue").setValue(ServerValue.TIMESTAMP)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
 
+                                                    if (task.isSuccessful()){
 
-                    // Extra Work for financialYear Result
-
-                                                int month = Integer.parseInt(exMonth);
-
-                                                if (1 <= month && month <= 3){
-
-                                                    int fShortForm = Integer.parseInt(exYearShortForm)-1;
-                                                    financialYearSortForm = String.valueOf(fShortForm)+"-"+exYearShortForm;
-
-                                                }else {
-
-                                                    int fShortForm = Integer.parseInt(exYearShortForm)+1;
-                                                    financialYearSortForm = exYearShortForm+"-"+String.valueOf(fShortForm);
-
-                                                }
-
-                     // Extra Work for financialYear Result
-
-
-
-                                               // Toast.makeText(KotActivity.this, financialYearSortForm, Toast.LENGTH_SHORT).show();
-
-
-                                                mDatabase.child("uttam").child(tableName)
-                                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        mDatabase.child("date").child("servervalue").addListenerForSingleValueEvent(new ValueEventListener() {
                                                             @Override
                                                             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                                                                if (dataSnapshot.exists()){
+                                                                    String timestamp = Objects.requireNonNull(dataSnapshot.getValue()).toString();   // use ms NOT s
+                                                                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy" );
+                                                                    SimpleDateFormat extraDate = new SimpleDateFormat("dd" );
+                                                                    SimpleDateFormat extraMonth = new SimpleDateFormat("MM" );
+                                                                    SimpleDateFormat extraYear = new SimpleDateFormat("yyyy" );
+                                                                    SimpleDateFormat extraYearShortForm = new SimpleDateFormat("yy" );
 
-                                                                mDatabase.child("finalbill").child("smi").child("date").child(date)
-                                                                        .child(companyShortName+"-"+financialYearSortForm+"-"+currentBillNumber)
-                                                                        .child("ItemList")
-                                                                        .setValue(dataSnapshot.getValue())
-                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                            @Override
-                                                                            public void onComplete(@NonNull Task<Void> task) {
-
-                                                                                mDatabase.child("uttam").child(tableName).removeValue();
-                                                                                mDatabase.child("uttam").child("waiter").child(tableName).removeValue();
-
-                                                                                Toast.makeText(KotActivity.this, "Successfully Added", Toast.LENGTH_SHORT).show();
-                                                                                finish();
-                                                                                viewBill(date);
+                                                                    date = dateFormat.format(new Date(Long.parseLong(timestamp)));
 
 
-                   int nextBill = Integer.parseInt(currentBillNumber)+1;
-
-                   mDatabase.child("finalbill").child("currentBill")
-                           .child("number").setValue(String.valueOf(nextBill));
-
-
+                                                                    String exDate = extraDate.format(new Date(Long.parseLong(timestamp)));
+                                                                    String exMonth = extraMonth.format(new Date(Long.parseLong(timestamp)));
+                                                                    String exYear = extraYear.format(new Date(Long.parseLong(timestamp)));
+                                                                    String exYearShortForm = extraYearShortForm.format(new Date(Long.parseLong(timestamp)));
 
 
-                   mDatabase.child("finalbill")
-                           .child("smi")
-                           .child("waiterReport")
-                           .child(date)
-                           .child(waiterName)
-                           .addListenerForSingleValueEvent(new ValueEventListener() {
-                               @Override
-                               public void onDataChange(DataSnapshot dataSnapshot) {
-                                   if (dataSnapshot.exists()){
-                                       String count2 = Objects.requireNonNull(dataSnapshot.getValue()).toString();
-                                       int u = Integer.parseInt(count2);
-                                       int total = u+1;
-                                       String totall = String.valueOf(total);
+                                                                    // Extra Work for financialYear Result
 
-                                      // Toast.makeText(KotActivity.this,count2 , Toast.LENGTH_SHORT).show();
+                                                                    int month = Integer.parseInt(exMonth);
 
-        mDatabase.child("finalbill").child("smi").child("waiterReport").child(date).child(waiterName).setValue(totall);
-         }else {
-            mDatabase.child("finalbill").child("smi").child("waiterReport").child(date).child(waiterName).setValue("1");
-                                     //  Toast.makeText(KotActivity.this,"1" , Toast.LENGTH_SHORT).show();
-            }
-         }
-                               @Override
-                               public void onCancelled(DatabaseError databaseError) {
+                                                                    if (1 <= month && month <= 3){
 
-                               }
-                           });
+                                                                        int fShortForm = Integer.parseInt(exYearShortForm)-1;
+                                                                        financialYearSortForm = String.valueOf(fShortForm)+"-"+exYearShortForm;
+
+                                                                    }else {
+
+                                                                        int fShortForm = Integer.parseInt(exYearShortForm)+1;
+                                                                        financialYearSortForm = exYearShortForm+"-"+String.valueOf(fShortForm);
+
+                                                                    }
+
+                                                                    // Extra Work for financialYear Result
 
 
 
+                                                                    // Toast.makeText(KotActivity.this, financialYearSortForm, Toast.LENGTH_SHORT).show();
 
 
-                                                                            }
-                   });
+                                                                    mDatabase.child("uttam").child(tableName)
+                                                                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                                @Override
+                                                                                public void onDataChange(DataSnapshot dataSnapshot) {
 
+
+                                                                                    mDatabase.child("finalbill").child("smi").child("date").child(date)
+                                                                                            .child(companyShortName+"-"+financialYearSortForm+"-"+currentBillNumber)
+                                                                                            .child("ItemList")
+                                                                                            .setValue(dataSnapshot.getValue())
+                                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                                @Override
+                                                                                                public void onComplete(@NonNull Task<Void> task) {
+
+                                                                                                    mDatabase.child("uttam").child(tableName).removeValue();
+                                                                                                    mDatabase.child("uttam").child("waiter").child(tableName).removeValue();
+
+                                                                                                    Toast.makeText(KotActivity.this, "Successfully Added", Toast.LENGTH_SHORT).show();
+                                                                                                    finish();
+                                                                                                    viewBill(date);
+
+
+                                                                                                    int nextBill = Integer.parseInt(currentBillNumber)+1;
+
+                                                                                                    mDatabase.child("finalbill").child("currentBill")
+                                                                                                            .child("number").setValue(String.valueOf(nextBill));
+
+
+
+
+                                                                                                    mDatabase.child("finalbill")
+                                                                                                            .child("smi")
+                                                                                                            .child("waiterReport")
+                                                                                                            .child(date)
+                                                                                                            .child(waiterName)
+                                                                                                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                                                                @Override
+                                                                                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                                                                    if (dataSnapshot.exists()){
+                                                                                                                        String count2 = Objects.requireNonNull(dataSnapshot.getValue()).toString();
+                                                                                                                        int u = Integer.parseInt(count2);
+                                                                                                                        int total = u+1;
+                                                                                                                        String totall = String.valueOf(total);
+
+                                                                                                                        // Toast.makeText(KotActivity.this,count2 , Toast.LENGTH_SHORT).show();
+
+                                                                                                                        mDatabase.child("finalbill").child("smi").child("waiterReport").child(date).child(waiterName).setValue(totall);
+                                                                                                                    }else {
+                                                                                                                        mDatabase.child("finalbill").child("smi").child("waiterReport").child(date).child(waiterName).setValue("1");
+                                                                                                                        //  Toast.makeText(KotActivity.this,"1" , Toast.LENGTH_SHORT).show();
+                                                                                                                    }
+                                                                                                                }
+                                                                                                                @Override
+                                                                                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                                                                                }
+                                                                                                            });
+
+
+
+
+
+                                                                                                }
+                                                                                            });
+
+                                                                                }
+
+                                                                                @Override
+                                                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                                                }
+                                                                            });
+
+
+                                                                    //  Toast.makeText(ManagementActivity.this, dateString, Toast.LENGTH_SHORT).show();
+                                                                }else {
+                                                                    Toast.makeText(KotActivity.this, "Please Check Your Internet", Toast.LENGTH_SHORT).show();
+
+                                                                }
                                                             }
 
                                                             @Override
@@ -445,23 +458,29 @@ public class KotActivity extends AppCompatActivity implements
 
                                                             }
                                                         });
+                                                    }
+                                                }
+                                            });
 
 
-                                                //  Toast.makeText(ManagementActivity.this, dateString, Toast.LENGTH_SHORT).show();
-                                            }else {
-                                                Toast.makeText(KotActivity.this, "Please Check Your Internet", Toast.LENGTH_SHORT).show();
 
-                                            }
-                                        }
 
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
 
-                                        }
-                                    });
+
                                 }
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
                             }
                         });
+
+
+
+
+
 
             }
         });
@@ -700,6 +719,15 @@ public class KotActivity extends AppCompatActivity implements
                             }
                             allAdapter.notifyDataSetChanged();
                         }
+
+                        if (item.equals("")){
+
+                            all_cat_layout.setVisibility(View.VISIBLE);
+                            search_layout.setVisibility(View.GONE);
+
+                        }
+
+
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
@@ -1062,6 +1090,8 @@ public class KotActivity extends AppCompatActivity implements
     @Override
     public void onItemClickSub(int position) {
 
+        final int getItemCount = nRecyclerView.getAdapter().getItemCount();
+
         Uttam clickItem = subUploads.get(position);
         final String rp = clickItem.getKey();
 
@@ -1171,6 +1201,8 @@ public class KotActivity extends AppCompatActivity implements
                                             mDatabase.child("uttam").child(tableName).child(rp).setValue(upload);
                                             mDatabase.child("uttam").child(tableName).child(rp).updateChildren(map3);
 
+                                            nRecyclerView.smoothScrollToPosition(getItemCount);
+
 
 
                                         }
@@ -1259,6 +1291,7 @@ public class KotActivity extends AppCompatActivity implements
     @Override
     public void onAllItemClick(int position) {
 
+        final int getItemCount = nRecyclerView.getAdapter().getItemCount();
 
         Uttam clickItem = allUploads.get(position);
         final String rp = clickItem.getKey();
@@ -1271,7 +1304,6 @@ public class KotActivity extends AppCompatActivity implements
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
                         if (dataSnapshot.child(tableName).child(rp).exists()){
-
 
                             String count = Objects.requireNonNull(dataSnapshot.child(tableName).child(rp).child("count").getValue()).toString();
 
@@ -1361,6 +1393,8 @@ public class KotActivity extends AppCompatActivity implements
                                             mDatabase.child("uttam").child(tableName).child(rp).setValue(upload);
                                             mDatabase.child("uttam").child(tableName).child(rp).updateChildren(map3);
 
+                                            nRecyclerView.smoothScrollToPosition(getItemCount);
+
                                         }
                                         @Override
                                         public void onCancelled(DatabaseError databaseError) {
@@ -1449,4 +1483,156 @@ public class KotActivity extends AppCompatActivity implements
     }
 
 
+    @Override
+    public void itemCount(final String text) {
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(KotActivity.this);
+        dialogBuilder.setIcon(R.drawable.smi);
+        dialogBuilder.setTitle("Select From Below");
+
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(KotActivity.this, android.R.layout.select_dialog_singlechoice);
+        arrayAdapter.add("1");
+        arrayAdapter.add("2");
+        arrayAdapter.add("3");
+        arrayAdapter.add("4");
+        arrayAdapter.add("5");
+        arrayAdapter.add("10");
+        arrayAdapter.add("15");
+        arrayAdapter.add("20");
+        arrayAdapter.add("30");
+
+
+        dialogBuilder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        dialogBuilder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String strName = arrayAdapter.getItem(which);
+
+                if (Objects.equals(strName, "1")){
+
+                    mDatabase.child("uttam").child(tableName).child(text)
+                            .child("count").setValue("")
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                    if (task.isSuccessful()){
+
+
+
+                                        mDatabase.child("uttam").child(tableName).child(text)
+                                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                                        String price = Objects.requireNonNull(dataSnapshot.child("price").getValue()).toString();
+                                                        String tax = Objects.requireNonNull(dataSnapshot.child("tax").getValue()).toString();
+
+                                                        double p = Double.parseDouble(price);
+                                                        double t = Double.parseDouble(tax);
+
+                                                        double taxPrice = p*t/100;
+                                                        double netAmount = p - taxPrice;
+
+                                                        @SuppressLint("DefaultLocale")
+                                                        String price2 = String.format("%.2f", p);
+                                                        @SuppressLint("DefaultLocale")
+                                                        String price3 = String.format("%.2f", netAmount);
+
+                                                        HashMap<String, Object> map = new HashMap<>();
+                                                        map.put("price2", price2);
+                                                        map.put("price3", price3);
+
+                                                        mDatabase.child("uttam").child(tableName).child(text)
+                                                                .updateChildren(map);
+
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(DatabaseError databaseError) {
+
+                                                    }
+                                                });
+
+                                        Toast.makeText(KotActivity.this, "added", Toast.LENGTH_SHORT).show();
+                                    }else {
+                                        Toast.makeText(KotActivity.this, "try again", Toast.LENGTH_SHORT).show();
+
+                                    }
+
+                                }
+                            });
+
+                }else {
+                    mDatabase.child("uttam").child(tableName).child(text)
+                            .child("count").setValue(strName)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                    if (task.isSuccessful()){
+
+                                     mDatabase.child("uttam").child(tableName).child(text)
+                                     .addListenerForSingleValueEvent(new ValueEventListener() {
+                                         @Override
+                                         public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                             String price = Objects.requireNonNull(dataSnapshot.child("price").getValue()).toString();
+                                             String count = Objects.requireNonNull(dataSnapshot.child("count").getValue()).toString();
+                                             String tax = Objects.requireNonNull(dataSnapshot.child("tax").getValue()).toString();
+
+                                             double p = Double.parseDouble(price);
+                                             double c = Double.parseDouble(count);
+                                             double t = Double.parseDouble(tax);
+
+                                             double tPrice = p*c;
+                                             double taxPrice = tPrice*t/100;
+                                             double netAmount = tPrice - taxPrice;
+
+                                             @SuppressLint("DefaultLocale")
+                                             String price2 = String.format("%.2f", tPrice);
+                                             @SuppressLint("DefaultLocale")
+                                             String price3 = String.format("%.2f", netAmount);
+
+                                             HashMap<String, Object> map = new HashMap<>();
+                                             map.put("price2", price2);
+                                             map.put("price3", price3);
+
+                                             mDatabase.child("uttam").child(tableName).child(text)
+                                                      .updateChildren(map);
+
+                                         }
+
+                                         @Override
+                                         public void onCancelled(DatabaseError databaseError) {
+
+                                         }
+                                     });
+
+                                    }else {
+                                        Toast.makeText(KotActivity.this, "try again", Toast.LENGTH_SHORT).show();
+
+                                    }
+
+                                }
+                            });
+                }
+
+
+
+
+
+
+            }
+        });
+        dialogBuilder.show();
+
+
+    }
 }

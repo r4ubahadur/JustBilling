@@ -17,7 +17,6 @@
         android:required="true" />
 
     <application
-        android:name=".classes.Management"
         android:allowBackup="true"
         android:icon="@drawable/smi"
         android:label="@string/app_name"
