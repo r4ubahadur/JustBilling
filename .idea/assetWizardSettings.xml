@@ -33,8 +33,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="opacityPercent" value="60" />
-                            <entry key="outputName" value="ic_category" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="ic_menu" />
                             <entry key="sourceFile" value="C:\Users\Anurag" />
                           </map>
                         </option>

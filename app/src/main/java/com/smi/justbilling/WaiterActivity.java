@@ -1,5 +1,6 @@
 package com.smi.justbilling;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,6 +35,8 @@ public class WaiterActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
 
+    private ProgressDialog mLoginProgress;
+
     private Boolean animation = true;
     private String anim;
 
@@ -55,6 +58,15 @@ public class WaiterActivity extends AppCompatActivity {
             animation = false;
         }
 
+        mLoginProgress = new ProgressDialog(this);
+
+        mLoginProgress.setTitle("Waiter");
+        mLoginProgress.setMessage("Please wait ...");
+        mLoginProgress.setCanceledOnTouchOutside(false);
+        mLoginProgress.show();
+
+
+
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -75,6 +87,9 @@ public class WaiterActivity extends AppCompatActivity {
                         ArrayAdapter<String> areasAdapter = new ArrayAdapter<>(WaiterActivity.this, android.R.layout.simple_spinner_item, waiterr);
                         waiter.setAdapter(areasAdapter);
 
+                        mLoginProgress.dismiss();
+
+
                     }
 
                     @Override
@@ -84,14 +99,30 @@ public class WaiterActivity extends AppCompatActivity {
                 });
 
 
+        FloatingActionButton waiter_back = findViewById(R.id.waiter_back);
+
+        waiter_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.l2r_enter, R.anim.r2exit );
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
         FloatingActionButton add_waiter = findViewById(R.id.add_waiter);
         add_waiter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
-
 
 
                 AlertDialog.Builder dialog = new AlertDialog.Builder(context);
@@ -110,7 +141,6 @@ public class WaiterActivity extends AppCompatActivity {
                     public void onClick(View v) {
 
                         String waiterName = editText.getText().toString();
-
                         String push = mDatabase.child("waiter").push().toString();
 
                         mDatabase.child("waiter")
@@ -128,39 +158,8 @@ public class WaiterActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

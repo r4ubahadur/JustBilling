@@ -40,7 +40,7 @@ public class ManagementActivity extends AppCompatActivity
 
     private boolean doubleBackToExitPressedOnce = false;
 
-    private Button fab, v_bill, category_a;
+    private Button fab, v_bill, category_a, waiter_a;
 
 
     @Override
@@ -81,6 +81,22 @@ public class ManagementActivity extends AppCompatActivity
                 overridePendingTransition( R.anim.b2exit, R.anim.t2b_enter);
             }
         });
+
+
+        waiter_a = findViewById(R.id.waiter_a);
+        waiter_a.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent cat = new Intent(ManagementActivity.this, WaiterActivity.class);
+                startActivity(cat);
+                overridePendingTransition( R.anim.r2l_enter, R.anim.l2exit);
+
+            }
+        });
+
+
+
 
 
 

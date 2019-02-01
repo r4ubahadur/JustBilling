@@ -45,23 +45,9 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ImageViewHol
 
     @Override
     public void onBindViewHolder(final ImageViewHolder holder, int position) {
-        Uttam upload = mUpload.get(position);
-
-
-        // Picasso.with(mContext).load(upload.getThumbImageUrl()).placeholder(R.drawable.purchase_icon).fit().centerInside().into(holder.imageView);
 
         holder.tableName.setSelected(true);
 
-
-        if(position == getItemCount() - 1) {
-
-            holder.tableName.setText("Add Table");
-            holder.imageView2.setVisibility(View.GONE);
-            holder.imageView3.setVisibility(View.VISIBLE);
-            holder.ll1.setVisibility(View.GONE);
-            holder.ll2.setVisibility(View.VISIBLE);
-
-        }else {
             holder.imageView3.setVisibility(View.GONE);
             holder.imageView2.setVisibility(View.VISIBLE);
             holder.tableName.setText("Table "+String.valueOf(position+1));
@@ -76,7 +62,6 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ImageViewHol
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                     if (dataSnapshot.exists()){
-
                         holder.running.setVisibility(View.VISIBLE);
 
                     }else {
@@ -92,11 +77,6 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ImageViewHol
 
                 }
             });
-
-
-
-
-
 
 
 
@@ -127,7 +107,7 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ImageViewHol
                     });
 
 
-        }
+
 
 
 

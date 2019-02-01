@@ -117,25 +117,7 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
 
 
 
-        mDatabase.child("TotalTable").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if (!dataSnapshot.exists()){
-
-                    String push = mDatabase.push().getKey();
-
-                    mDatabase.child("TotalTable").child(push).child("name").setValue("Add Table");
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
         FloatingActionButton back_icon_for_home = findViewById(R.id.back_icon_for_home);
         back_icon_for_home.setOnClickListener(new View.OnClickListener() {
@@ -151,7 +133,227 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
         });
 
 
+        FloatingActionButton table_menu = findViewById(R.id.table_menu);
+        table_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(FirstActivity.this);
+                LayoutInflater inflater = FirstActivity.this.getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.table_menu, null);
+                dialogBuilder.setView(dialogView);
+                final AlertDialog alertDialog = dialogBuilder.create();
+
+
+
+
+                TextView add_table = dialogView.findViewById(R.id.add_table);
+                add_table.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        final int itemCount = mRecyclerView.getAdapter().getItemCount();
+
+                        String push = mDatabase.push().getKey();
+                        mDatabase.child("TotalTable").child(push).child("name").setValue(push);
+                        mRecyclerView.smoothScrollToPosition(itemCount);
+
+                    }
+                });
+
+
+
+
+                TextView set_table = dialogView.findViewById(R.id.set_table);
+                set_table.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+
+                        mDatabase.child("uttam")
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (!dataSnapshot.exists()){
+                                            AlertDialog.Builder dBuilder = new AlertDialog.Builder(FirstActivity.this);
+                                            dBuilder.setIcon(R.drawable.smi);
+                                            dBuilder.setTitle("Select From Below");
+
+                                            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(FirstActivity.this, android.R.layout.select_dialog_singlechoice);
+                                            arrayAdapter.add("1");
+                                            arrayAdapter.add("2");
+                                            arrayAdapter.add("3");
+                                            arrayAdapter.add("4");
+                                            arrayAdapter.add("5");
+                                            arrayAdapter.add("6");
+                                            arrayAdapter.add("7");
+                                            arrayAdapter.add("8");
+                                            arrayAdapter.add("9");
+                                            arrayAdapter.add("10");
+                                            arrayAdapter.add("11");
+                                            arrayAdapter.add("12");
+                                            arrayAdapter.add("13");
+                                            arrayAdapter.add("14");
+                                            arrayAdapter.add("15");
+                                            arrayAdapter.add("16");
+                                            arrayAdapter.add("17");
+                                            arrayAdapter.add("18");
+                                            arrayAdapter.add("19");
+                                            arrayAdapter.add("20");
+                                            arrayAdapter.add("Custom");
+
+
+                                            dBuilder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+
+
+                                            dBuilder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    final String putNumber = arrayAdapter.getItem(which);
+
+                                                    reload(putNumber);
+
+                                                }
+                                            });
+
+
+                                            dBuilder.show();
+                                            alertDialog.dismiss();
+                                        }else {
+                                            alertDialog.dismiss();
+
+                                            AlertDialog.Builder alert = new AlertDialog.Builder(FirstActivity.this);
+                                            alert.setMessage("If any table is now running, you can not set the table now.");
+                                            alert.setTitle("Tech Guru");
+                                            alert.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int whichButton) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+
+                                            alert.show();
+                                        }
+                                    }
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+
+
+
+
+                    }
+                });
+
+
+                alertDialog.show();
+
+            }
+        });
+
+
+
+    }         //onCreate
+
+    private void reload(final String putNumber) {
+
+
+        mDatabase.child("TotalTable")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        long count = dataSnapshot.getChildrenCount();
+                        Integer childNumber = (int) (long) count;
+
+                        if (putNumber.equals("Custom")){
+
+
+                        }else {
+                            Integer putNo = Integer.parseInt(putNumber);
+
+                            if (!childNumber.equals(putNo)){
+
+                                one(childNumber, putNo);
+
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
     }
+
+    private void one(int childNumber, int putNo) {
+        delete(childNumber, putNo);
+    }
+
+    private void delete(final int childNumber, final int putNo) {
+
+       mDatabase.child("TotalTable").removeValue()
+               .addOnCompleteListener(new OnCompleteListener<Void>() {
+                   @Override
+                   public void onComplete(@NonNull Task<Void> task) {
+
+                       two(childNumber, putNo);
+
+                   }
+               });
+
+    }
+
+    private void two(final int childNumber, final int putNo) {
+
+        final int itemCount = mRecyclerView.getAdapter().getItemCount();
+
+        mDatabase.child("TotalTable")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        long count = dataSnapshot.getChildrenCount();
+                        Integer childNo = (int) (long) count;
+
+
+                        if (childNo < putNo ){
+                            String key = mDatabase.push().getKey();
+                            mDatabase.child("TotalTable").child(key).child("name").setValue(key);
+                            mRecyclerView.smoothScrollToPosition(itemCount);
+                            three(childNumber, putNo);
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+    }
+
+    private void three(int childNumber, int putNo) {
+
+        two(childNumber, putNo);
+
+    }
+
+
 
     @Override
     public void onBackPressed() {
@@ -165,31 +367,13 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
 
     @Override
     public void onItemClick(final int position) {
+       // final int getItemCount = mRecyclerView.getAdapter().getItemCount();
+       // String push = mDatabase.push().getKey();
 
-        final int getItemCount = mRecyclerView.getAdapter().getItemCount();
-        String push = mDatabase.push().getKey();
-
-        if(position == getItemCount - 1){
-
-            mDatabase.child("TotalTable").child(push).child("name").setValue(push)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
-                                Toast.makeText(FirstActivity.this, "Table Added Successfully", Toast.LENGTH_SHORT).show();
-                                mRecyclerView.smoothScrollToPosition(getItemCount);
-                            }
-                        }
-                    });
-        }else{
             final String tableName = ((TextView) mRecyclerView.findViewHolderForAdapterPosition(position).itemView.findViewById(R.id.tableName)).getText().toString();
             final String waiterName = ((TextView) mRecyclerView.findViewHolderForAdapterPosition(position).itemView.findViewById(R.id.waiterName)).getText().toString();
 
-
             tableNumber =  mRecyclerView.findViewHolderForAdapterPosition(position).toString();
-
-
-
 
             mDatabase.child("uttam")
                     .child("waiter")
@@ -202,16 +386,13 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
 
                                 DatabaseReference nDatabase = FirebaseDatabase.getInstance().getReference();
 
-
                                 AlertDialog.Builder dialog = new AlertDialog.Builder(context);
 
                                 LayoutInflater inflater = FirstActivity.this.getLayoutInflater();
                                 View dialogView = inflater.inflate(R.layout.waiter_list, null);
                                 dialog.setView(dialogView);
 
-
                                 final ListView waiter_list = dialogView.findViewById(R.id.waiter_list);
-
                                 final AlertDialog alertDialog = dialog.create();
 
 
@@ -229,7 +410,6 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
                                                 ArrayAdapter<String> areasAdapter = new ArrayAdapter<>(FirstActivity.this, android.R.layout.simple_spinner_item, waiterr);
 
                                                 waiter_list.setAdapter(areasAdapter);
-
                                             }
 
                                             @Override
@@ -237,8 +417,6 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
 
                                             }
                                         });
-
-
 
                                 waiter_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
@@ -257,10 +435,7 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
 
                                     }
                                 });
-
                                 alertDialog.show();
-
-
                             }else {
 
                                 Intent first = new Intent(FirstActivity.this, KotActivity.class);
@@ -281,7 +456,7 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
 
 
 
-        }
+
     }
 
 
@@ -289,70 +464,56 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
     @Override
     public void onItemLongClick(int position) {
 
-        int getItemCount = mRecyclerView.getAdapter().getItemCount();
-
         Uttam clickItem = mUpload.get(position);
         final String push = clickItem.getKey();
 
+        final String table = ((TextView) mRecyclerView.findViewHolderForAdapterPosition(position).itemView.findViewById(R.id.tableName)).getText().toString();
 
-        if(!(position == getItemCount - 1)){
+        //   Toast.makeText(FirstActivity.this, String.valueOf(position), Toast.LENGTH_SHORT).show();
 
-            final String table = ((TextView) mRecyclerView.findViewHolderForAdapterPosition(position).itemView.findViewById(R.id.tableName)).getText().toString();
+        AlertDialog.Builder alert = new AlertDialog.Builder(FirstActivity.this);
+        alert.setMessage("Are you want to Delete this Table ?");
+        alert.setTitle("Tech Guru");
 
-            //   Toast.makeText(FirstActivity.this, String.valueOf(position), Toast.LENGTH_SHORT).show();
+        alert.setPositiveButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.dismiss();
+            }
+        }).setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialog, int i) {
 
+                mDatabase.child("uttam")
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (!dataSnapshot.exists()){
+                                    mDatabase.child("TotalTable").child(push).removeValue();
+                                    dialog.dismiss();
+                                }else {
+                                    dialog.dismiss();
 
+                                    AlertDialog.Builder alert = new AlertDialog.Builder(FirstActivity.this);
+                                    alert.setMessage("If any table is now running, you can not delete the table now.");
+                                    alert.setTitle("Tech Guru");
+                                    alert.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int whichButton) {
+                                            dialog.dismiss();
+                                        }
+                                    });
 
-
-
-            AlertDialog.Builder alert = new AlertDialog.Builder(FirstActivity.this);
-            alert.setMessage("Are you want to Delete this Table ?");
-            alert.setTitle("Tech Guru");
-            alert.setCancelable(false);
-
-            alert.setPositiveButton("No", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-
-                    dialog.dismiss();
-                }
-            }).setNegativeButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(final DialogInterface dialog, int i) {
-
-
-                    mDatabase.child("uttam")
-                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                    if (!dataSnapshot.exists()){
-                                        mDatabase.child("TotalTable").child(push).removeValue();
-                                        dialog.dismiss();
-                                    }else {
-                                        dialog.dismiss();
-
-                                        AlertDialog.Builder alert = new AlertDialog.Builder(FirstActivity.this);
-                                        alert.setMessage("If any Table is running now then you can't delete any Table yet.");
-                                        alert.setTitle("Tech Guru");
-                                        alert.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int whichButton) {
-                                                dialog.dismiss();
-                                            }
-                                        });
-
-                                        alert.show();
-                                    }
+                                    alert.show();
                                 }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });
+                            }
+                        });
                 }
             });
             alert.show();
-        }
+
 
 
 
