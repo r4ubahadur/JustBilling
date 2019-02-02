@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +31,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.smi.justbilling.adapter.TableAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import in.smi.ru.uttamlibrary.Uttam;
@@ -144,6 +147,183 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
                 View dialogView = inflater.inflate(R.layout.table_menu, null);
                 dialogBuilder.setView(dialogView);
                 final AlertDialog alertDialog = dialogBuilder.create();
+
+
+
+
+
+
+
+
+
+
+
+                TextView take_away = dialogView.findViewById(R.id.take_away);
+                take_away.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+
+                        alertDialog.dismiss();
+
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+
+                        LayoutInflater inflater = FirstActivity.this.getLayoutInflater();
+                        View dialogView = inflater.inflate(R.layout.waiter_list, null);
+                        dialog.setView(dialogView);
+
+                        final ListView waiter_list = dialogView.findViewById(R.id.waiter_list);
+                        final AlertDialog aDialog = dialog.create();
+
+
+                        mDatabase.child("waiter")
+                                .addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                        waiterr.clear();
+                                        for (DataSnapshot waiterSnapshot: dataSnapshot.getChildren()) {
+                                            String waiter = waiterSnapshot.child("name").getValue(String.class);
+                                            waiterr.add(waiter);
+                                        }
+
+                                        ArrayAdapter<String> areasAdapter = new ArrayAdapter<>(FirstActivity.this, android.R.layout.simple_spinner_item, waiterr);
+
+                                        waiter_list.setAdapter(areasAdapter);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+                        waiter_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                String waiterName = waiter_list.getItemAtPosition(position).toString();
+
+                                aDialog.dismiss();
+
+                                Intent first = new Intent(FirstActivity.this, KotActivity.class);
+
+                                first.putExtra("WaiterName", waiterName);
+                                first.putExtra("TableName", "TakeAway");
+                                startActivity(first);
+                                overridePendingTransition(R.anim.b2exit, R.anim.t2b_enter );
+
+
+                            }
+                        });
+                        aDialog.show();
+
+
+                    }
+                });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                TextView moving_table = dialogView.findViewById(R.id.moving_table);
+                moving_table.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+
+                        final AlertDialog.Builder moveBuilder = new AlertDialog.Builder(FirstActivity.this);
+                        LayoutInflater inflater = FirstActivity.this.getLayoutInflater();
+                        final View dialogView = inflater.inflate(R.layout.table_menu_move, null);
+                        moveBuilder.setView(dialogView);
+                        final AlertDialog mBuilder = moveBuilder.create();
+                        mBuilder.setCancelable(false);
+
+
+
+                        TextView ok_move = dialogView.findViewById(R.id.ok_move);
+                        TextView cancel_moving = dialogView.findViewById(R.id.cancel_moving);
+
+
+                        cancel_moving.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                mBuilder.dismiss();
+
+                            }
+                        });
+
+                        ok_move.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                EditText from_no = dialogView.findViewById(R.id.from_no);
+                                EditText to_no = dialogView.findViewById(R.id.to_no);
+
+                                final String from = "Table "+from_no.getText().toString();
+                                final String to = "Table "+to_no.getText().toString();
+
+                                mDatabase.child("uttam").child(from)
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                                mDatabase.child("uttam").child(to).setValue(dataSnapshot.getValue())
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                                                if (task.isSuccessful()){
+
+                                                                    mDatabase.child("uttam").child(from).setValue(null);
+                                                                    mDatabase.child("uttam").child("waiter").child(from).setValue(null);
+
+                                                                    mBuilder.dismiss();
+
+
+                                                                }
+
+                                                            }
+                                                        });
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+
+
+
+                            }
+                        });
+
+                        mBuilder.show();
+
+                        alertDialog.dismiss();
+
+
+
+                    }
+                });
 
 
 
