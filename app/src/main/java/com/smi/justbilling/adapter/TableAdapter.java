@@ -91,13 +91,9 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ImageViewHol
 
                             if (dataSnapshot.exists()){
 
-
                                 String waiterName = Objects.requireNonNull(dataSnapshot.getValue()).toString();
                                 holder.waiterName.setText(waiterName);
-
-
                             }
-
                         }
 
                         @Override
@@ -105,11 +101,6 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ImageViewHol
 
                         }
                     });
-
-
-
-
-
 
     }
 

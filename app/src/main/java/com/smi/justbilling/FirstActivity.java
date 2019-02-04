@@ -116,12 +116,6 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
 
 
 
-
-
-
-
-
-
         FloatingActionButton back_icon_for_home = findViewById(R.id.back_icon_for_home);
         back_icon_for_home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,12 +141,6 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
                 View dialogView = inflater.inflate(R.layout.table_menu, null);
                 dialogBuilder.setView(dialogView);
                 final AlertDialog alertDialog = dialogBuilder.create();
-
-
-
-
-
-
 
 
 
@@ -217,29 +205,8 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
                         });
                         aDialog.show();
 
-
                     }
                 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
                 TextView moving_table = dialogView.findViewById(R.id.moving_table);

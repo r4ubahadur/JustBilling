@@ -42,17 +42,40 @@
 
 
        <LinearLayout
-           android:visibility="gone"
-           android:id="@+id/running"
-           android:gravity="end"
+           android:orientation="horizontal"
+           android:weightSum="1"
            android:layout_width="match_parent"
            android:layout_height="wrap_content">
 
-           <pl.droidsonroids.gif.GifImageView
-               android:layout_width="30dp"
-               android:layout_height="30dp"
-               android:src="@drawable/gif" />
+
+           <LinearLayout
+               android:layout_weight=".75"
+               android:layout_width="0dp"
+               android:layout_height="wrap_content">
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:visibility="gone"
+               android:id="@+id/running"
+               android:layout_weight=".25"
+               android:gravity="end|center"
+               android:layout_width="0dp"
+               android:layout_height="wrap_content">
+
+               <pl.droidsonroids.gif.GifImageView
+                   android:layout_width="30dp"
+                   android:layout_height="30dp"
+                   android:src="@drawable/gif" />
+
+           </LinearLayout>
+
+
+
+
        </LinearLayout>
+
+
 
         <LinearLayout
             android:orientation="vertical"
