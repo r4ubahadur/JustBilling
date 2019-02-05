@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -55,7 +56,7 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ImageViewHol
             holder.ll2.setVisibility(View.GONE);
 
 
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("uttam").child("Table "+String.valueOf(position+1));
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("uttam").child("Table "+String.valueOf(position+1)).child("root");
 
             mDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -77,6 +78,70 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ImageViewHol
 
                 }
             });
+
+        final String waiterName = holder.waiterName.getText().toString();
+
+        holder.table_share_one.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(mContext instanceof TableAdapter.ShareTable1){
+
+                    ((TableAdapter.ShareTable1)mContext).share_Table1("1", waiterName);
+
+
+                }
+
+            }
+        });
+
+        holder.table_share_two.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(mContext instanceof TableAdapter.ShareTable2){
+                    ((TableAdapter.ShareTable2)mContext).share_Table2("2", waiterName);
+                }
+
+            }
+        });
+
+        holder.table_share_three.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(mContext instanceof TableAdapter.ShareTable3){
+                    ((TableAdapter.ShareTable3)mContext).share_Table3("3", waiterName);
+                }
+
+            }
+        });
+
+        holder.table_share_four.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(mContext instanceof TableAdapter.ShareTable4){
+                    ((TableAdapter.ShareTable4)mContext).share_Table4("4", waiterName);
+                }
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -129,11 +194,20 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ImageViewHol
         public TextView tableName, waiterName ;
         public RelativeLayout imageView2, imageView3;
         public LinearLayout ll1, ll2, running;
+        public ImageView table_share_one, table_share_two, table_share_three, table_share_four;
 
 
 
         public ImageViewHolder(View itemView) {
             super(itemView);
+
+            table_share_one = itemView.findViewById(R.id.table_share_one);
+            table_share_two = itemView.findViewById(R.id.table_share_two);
+            table_share_three = itemView.findViewById(R.id.table_share_three);
+            table_share_four = itemView.findViewById(R.id.table_share_four);
+
+
+
 
             tableName = itemView.findViewById(R.id.tableName);
             waiterName = itemView.findViewById(R.id.waiterName);
@@ -193,6 +267,28 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ImageViewHol
 
         void onItemLongClick(int position);
     }
+
+
+    public interface ShareTable1 {
+        void share_Table1(String tableNo1, String wName);
+
+    }
+
+    public interface ShareTable2 {
+        void share_Table2(String tableNo2, String wName);
+
+    }
+
+    public interface ShareTable3 {
+        void share_Table3(String tableNo3, String wName);
+
+    }
+
+    public interface ShareTable4 {
+        void share_Table4(String tableNo4, String wName);
+
+    }
+
 
 
 

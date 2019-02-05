@@ -5,18 +5,23 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,7 +43,10 @@ public class WaiterActivity extends AppCompatActivity {
     private ProgressDialog mLoginProgress;
 
     private Boolean animation = true;
-    private String anim;
+
+    private ListView waiter;
+
+    private String anim, waiterL, key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +79,7 @@ public class WaiterActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        final ListView waiter = findViewById(R.id.waiterList);
+         waiter = findViewById(R.id.waiterList);
 
 
         mDatabase.child("waiter")
@@ -97,6 +105,106 @@ public class WaiterActivity extends AppCompatActivity {
 
                     }
                 });
+
+
+        waiter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+
+                waiterL = (String) waiter.getItemAtPosition(i);
+
+
+
+
+                mDatabase.child("waiter").orderByChild("name").equalTo(waiterL)
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                for (DataSnapshot d : dataSnapshot.getChildren()){
+
+                                    final String key = d.getKey();
+
+                                   // Toast.makeText(WaiterActivity.this, key, Toast.LENGTH_SHORT).show();
+
+
+                                    AlertDialog.Builder customBuilder = new AlertDialog.Builder(WaiterActivity.this);
+                                    LayoutInflater inflater = WaiterActivity.this.getLayoutInflater();
+                                    View dView = inflater.inflate(R.layout.waiter_add, null);
+                                    customBuilder.setView(dView);
+                                    final AlertDialog cBuilder = customBuilder.create();
+                                    cBuilder.setCanceledOnTouchOutside(false);
+
+
+
+                                    final EditText enter_waiter_name = dView.findViewById(R.id.enter_waiter_name);
+                                    TextView enter_waiter_btn = dView.findViewById(R.id.enter_waiter_btn);
+
+                                    enter_waiter_btn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+
+                                            if (!enter_waiter_name.getText().toString().equals("")){
+
+                                                String w = enter_waiter_name.getText().toString();
+
+                                                mDatabase.child("waiter").child(key).child("name").setValue(w)
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                                                if (task.isSuccessful()){
+                                                                    cBuilder.dismiss();
+
+                                                                }else {
+                                                                    cBuilder.dismiss();
+                                                                }
+
+                                                            }
+                                                        });
+
+                                            }
+
+
+                                        }
+                                    });
+
+
+
+
+
+                                    cBuilder.show();
+
+
+
+
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+            }
+        });
+
+
 
 
         FloatingActionButton waiter_back = findViewById(R.id.waiter_back);

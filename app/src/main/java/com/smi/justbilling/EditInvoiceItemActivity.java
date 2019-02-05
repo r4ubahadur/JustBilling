@@ -27,9 +27,11 @@ public class EditInvoiceItemActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
 
-    private TextInputLayout edit_item_name,  edit_item_tax, edit_item_discount;
+    private TextInputLayout edit_item_name,  edit_item_tax, edit_item_discount, edit_item_price;
 
     private Button save_btn ;
+
+    private int count = 1, price5 = 0, price2 = 0;
 
     private ProgressDialog rProgressDialog;
 
@@ -46,6 +48,7 @@ public class EditInvoiceItemActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         edit_item_name = findViewById(R.id.edit_item_name);
+        edit_item_price = findViewById(R.id.edit_item_price);
         edit_item_tax = findViewById(R.id.edit_item_tax);
         edit_item_discount = findViewById(R.id.edit_item_discount);
 
@@ -54,6 +57,60 @@ public class EditInvoiceItemActivity extends AppCompatActivity {
 
         rProgressDialog = new ProgressDialog(this);
 
+
+
+
+
+        mDatabase.child("uttam").child(tableName).child("root").child(key)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                        if (dataSnapshot.child("count").exists()){
+
+                            if (Objects.requireNonNull(dataSnapshot.child("count").getValue()).toString().equals("")){
+                                 count = 1;
+
+                            }else {
+
+                                String c = Objects.requireNonNull(dataSnapshot.child("count").getValue()).toString();
+                                 count = Integer.parseInt(c);
+                            }
+
+                        }
+
+
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         save_btn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -61,6 +118,13 @@ public class EditInvoiceItemActivity extends AppCompatActivity {
 
                 String tax = Objects.requireNonNull(edit_item_tax.getEditText()).getText().toString();
                 String discount = Objects.requireNonNull(edit_item_discount.getEditText()).getText().toString();
+                String price = Objects.requireNonNull(edit_item_price.getEditText()).getText().toString();
+
+                int p = Integer.parseInt(price);
+
+                price2 = p*count;
+
+
 
 
                 rProgressDialog.setTitle("Please wait...");
@@ -69,15 +133,17 @@ public class EditInvoiceItemActivity extends AppCompatActivity {
 
                 if (discount.equals("")){
                     HashMap<String, Object> map = new HashMap<>();
+                    map.put("price", price);
+                    map.put("price2", String.valueOf(price2) );
                     map.put("tax", tax);
 
-                    mDatabase.child("uttam").child(tableName).child(key).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    mDatabase.child("uttam").child(tableName).child("root").child(key).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
 
                             if (task.isSuccessful()){
 
-                                mDatabase.child("uttam").child(tableName).child(key)
+                                mDatabase.child("uttam").child(tableName).child("root").child(key)
                                         .addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -102,7 +168,7 @@ public class EditInvoiceItemActivity extends AppCompatActivity {
                                                         @SuppressLint("DefaultLocale")
                                                         String price3 = String.format("%.2f", p2);
 
-                                                        mDatabase.child("uttam").child(tableName).child(key).child("price3").setValue(price3)
+                                                        mDatabase.child("uttam").child(tableName).child("root").child(key).child("price3").setValue(price3)
                                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<Void> task) {
@@ -130,7 +196,7 @@ public class EditInvoiceItemActivity extends AppCompatActivity {
                                                         @SuppressLint("DefaultLocale")
                                                         String price3 = String.format("%.2f", p2);
 
-                                                        mDatabase.child("uttam").child(tableName).child(key).child("price3").setValue(price3)
+                                                        mDatabase.child("uttam").child(tableName).child("root").child(key).child("price3").setValue(price3)
                                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<Void> task) {
@@ -166,13 +232,13 @@ public class EditInvoiceItemActivity extends AppCompatActivity {
                     map.put("tax", tax);
                     map.put("disPrice", discount);
 
-                    mDatabase.child("uttam").child(tableName).child(key).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    mDatabase.child("uttam").child(tableName).child("root").child(key).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
 
                             if (task.isSuccessful()){
 
-                                mDatabase.child("uttam").child(tableName).child(key)
+                                mDatabase.child("uttam").child(tableName).child("root").child(key)
                                         .addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -197,7 +263,7 @@ public class EditInvoiceItemActivity extends AppCompatActivity {
                                                         @SuppressLint("DefaultLocale")
                                                         String price3 = String.format("%.2f", p2);
 
-                                                        mDatabase.child("uttam").child(tableName).child(key).child("price3").setValue(price3)
+                                                        mDatabase.child("uttam").child(tableName).child("root").child(key).child("price3").setValue(price3)
                                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<Void> task) {
@@ -225,7 +291,7 @@ public class EditInvoiceItemActivity extends AppCompatActivity {
                                                         @SuppressLint("DefaultLocale")
                                                         String price3 = String.format("%.2f", p2);
 
-                                                        mDatabase.child("uttam").child(tableName).child(key).child("price3").setValue(price3)
+                                                        mDatabase.child("uttam").child(tableName).child("root").child(key).child("price3").setValue(price3)
                                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<Void> task) {
@@ -268,7 +334,29 @@ public class EditInvoiceItemActivity extends AppCompatActivity {
 
 
 
-        mDatabase.child("uttam").child(tableName).child(key)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        mDatabase.child("uttam").child(tableName).child("root").child(key)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -280,6 +368,12 @@ public class EditInvoiceItemActivity extends AppCompatActivity {
 
 
                             Objects.requireNonNull(edit_item_name.getEditText()).setText(name);
+
+
+
+                            if (dataSnapshot.child("price").exists()){
+                                Objects.requireNonNull(edit_item_price.getEditText()).setText(price);
+                            }
 
 
                             if (dataSnapshot.child("tax").exists()){

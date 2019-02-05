@@ -111,7 +111,7 @@ public class KotPrintActivity extends AppCompatActivity implements KotAdapter.On
 
 
         mDatabase.child("uttam")
-                .child(tableName)
+                .child(tableName).child("root")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

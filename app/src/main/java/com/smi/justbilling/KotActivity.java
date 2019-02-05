@@ -176,7 +176,7 @@ public class KotActivity extends AppCompatActivity implements
 
        // mDatabase.keepSynced(true);
 
-        mDatabase.child("uttam").child(tableName).orderByChild("time").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("uttam").child(tableName).child("root").orderByChild("time").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 nUploads.clear();
@@ -208,7 +208,7 @@ public class KotActivity extends AppCompatActivity implements
             }
         });
 
-        mDatabase.child("uttam").child(tableName)
+        mDatabase.child("uttam").child(tableName).child("root")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -313,7 +313,7 @@ public class KotActivity extends AppCompatActivity implements
             public void onClick(View v) {
 
 
-                mDatabase.child("uttam").child(tableName)
+                mDatabase.child("uttam").child(tableName).child("root")
                         .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -372,7 +372,7 @@ public class KotActivity extends AppCompatActivity implements
                                                                     // Toast.makeText(KotActivity.this, financialYearSortForm, Toast.LENGTH_SHORT).show();
 
 
-                                                                    mDatabase.child("uttam").child(tableName)
+                                                                    mDatabase.child("uttam").child(tableName).child("root")
                                                                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                                                                 @Override
                                                                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -386,7 +386,7 @@ public class KotActivity extends AppCompatActivity implements
                                                                                                 @Override
                                                                                                 public void onComplete(@NonNull Task<Void> task) {
 
-                                                                                                    mDatabase.child("uttam").child(tableName).removeValue();
+                                                                                                    mDatabase.child("uttam").child(tableName).child("root").removeValue();
                                                                                                     mDatabase.child("uttam").child("waiter").child(tableName).removeValue();
 
                                                                                                     Toast.makeText(KotActivity.this, "Successfully Added", Toast.LENGTH_SHORT).show();
@@ -495,7 +495,7 @@ public class KotActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
 
-                mDatabase.child("uttam").child(tableName)
+                mDatabase.child("uttam").child(tableName).child("root")
                         .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -956,7 +956,7 @@ public class KotActivity extends AppCompatActivity implements
             @Override
             public void onClick(final DialogInterface dialog, int which) {
 
-                mDatabase.child("uttam").child(tableName).child(ruma).removeValue()
+                mDatabase.child("uttam").child(tableName).child("root").child(ruma).removeValue()
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -1102,24 +1102,24 @@ public class KotActivity extends AppCompatActivity implements
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        if (dataSnapshot.child(tableName).child(rp).exists()){
-                            String count = Objects.requireNonNull(dataSnapshot.child(tableName).child(rp).child("count").getValue()).toString();
+                        if (dataSnapshot.child(tableName).child("root").child(rp).exists()){
+                            String count = Objects.requireNonNull(dataSnapshot.child(tableName).child("root").child(rp).child("count").getValue()).toString();
 
                             if (count.equals("")){
                                 int countPlus = 2;
                                 String totalCount = String.valueOf(countPlus);
-                                mDatabase.child("uttam").child(tableName).child(rp).child("count").setValue(totalCount);
+                                mDatabase.child("uttam").child(tableName).child("root").child(rp).child("count").setValue(totalCount);
 
                             }else {
                                 int countt = Integer.parseInt(count);
                                 int countPlus = countt+1;
                                 String totalCount = String.valueOf(countPlus);
-                                mDatabase.child("uttam").child(tableName).child(rp).child("count").setValue(totalCount);
+                                mDatabase.child("uttam").child(tableName).child("root").child(rp).child("count").setValue(totalCount);
                             }
 
-                            String price = Objects.requireNonNull(dataSnapshot.child(tableName).child(rp).child("price").getValue()).toString();
-                            String countP = Objects.requireNonNull(dataSnapshot.child(tableName).child(rp).child("count").getValue()).toString();
-                            String tax = Objects.requireNonNull(dataSnapshot.child(tableName).child(rp).child("tax").getValue()).toString();
+                            String price = Objects.requireNonNull(dataSnapshot.child(tableName).child("root").child(rp).child("price").getValue()).toString();
+                            String countP = Objects.requireNonNull(dataSnapshot.child(tableName).child("root").child(rp).child("count").getValue()).toString();
+                            String tax = Objects.requireNonNull(dataSnapshot.child(tableName).child("root").child(rp).child("tax").getValue()).toString();
 
 
                             if (countP.equals("")){
@@ -1142,7 +1142,7 @@ public class KotActivity extends AppCompatActivity implements
                                 map.put("price2", totalPrice);
                                 //map.put("price3", price3);
 
-                                mDatabase.child("uttam").child(tableName).child(rp).updateChildren(map);
+                                mDatabase.child("uttam").child(tableName).child("root").child(rp).updateChildren(map);
 
 
 
@@ -1166,7 +1166,7 @@ public class KotActivity extends AppCompatActivity implements
                                 map2.put("price2", totalPrice);
                                 //map2.put("price3", price3);
 
-                                mDatabase.child("uttam").child(tableName).child(rp).updateChildren(map2);
+                                mDatabase.child("uttam").child(tableName).child("root").child(rp).updateChildren(map2);
 
 
                             }
@@ -1198,8 +1198,8 @@ public class KotActivity extends AppCompatActivity implements
                                             //map3.put("price3", price3);
 
                                             Uttam upload = dataSnapshot.getValue(Uttam.class);
-                                            mDatabase.child("uttam").child(tableName).child(rp).setValue(upload);
-                                            mDatabase.child("uttam").child(tableName).child(rp).updateChildren(map3);
+                                            mDatabase.child("uttam").child(tableName).child("root").child(rp).setValue(upload);
+                                            mDatabase.child("uttam").child(tableName).child("root").child(rp).updateChildren(map3);
 
                                             nRecyclerView.smoothScrollToPosition(getItemCount);
 
@@ -1222,7 +1222,7 @@ public class KotActivity extends AppCompatActivity implements
                 });
 
 
-        mDatabase.child("uttam").child(tableName).child(rp)
+        mDatabase.child("uttam").child(tableName).child("root").child(rp)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -1244,7 +1244,7 @@ public class KotActivity extends AppCompatActivity implements
                                 @SuppressLint("DefaultLocale")
                                 String price3 = String.format("%.2f", p3);
 
-                                mDatabase.child("uttam").child(tableName).child(rp)
+                                mDatabase.child("uttam").child(tableName).child("root").child(rp)
                                         .child("price3").setValue(price3);
 
                             }else {
@@ -1260,7 +1260,7 @@ public class KotActivity extends AppCompatActivity implements
                                 @SuppressLint("DefaultLocale")
                                 String price3 = String.format("%.2f", p3);
 
-                                mDatabase.child("uttam").child(tableName).child(rp)
+                                mDatabase.child("uttam").child(tableName).child("root").child(rp)
                                         .child("price3").setValue(price3);
                             }
 
@@ -1303,25 +1303,25 @@ public class KotActivity extends AppCompatActivity implements
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        if (dataSnapshot.child(tableName).child(rp).exists()){
+                        if (dataSnapshot.child(tableName).child("root").child(rp).exists()){
 
-                            String count = Objects.requireNonNull(dataSnapshot.child(tableName).child(rp).child("count").getValue()).toString();
+                            String count = Objects.requireNonNull(dataSnapshot.child(tableName).child("root").child(rp).child("count").getValue()).toString();
 
                             if (count.equals("")){
                                 int countPlus = 2;
                                 String totalCount = String.valueOf(countPlus);
-                                mDatabase.child("uttam").child(tableName).child(rp).child("count").setValue(totalCount);
+                                mDatabase.child("uttam").child(tableName).child("root").child(rp).child("count").setValue(totalCount);
 
                             }else {
                                 int countt = Integer.parseInt(count);
                                 int countPlus = countt+1;
                                 String totalCount = String.valueOf(countPlus);
-                                mDatabase.child("uttam").child(tableName).child(rp).child("count").setValue(totalCount);
+                                mDatabase.child("uttam").child(tableName).child("root").child(rp).child("count").setValue(totalCount);
                             }
 
-                            String price = Objects.requireNonNull(dataSnapshot.child(tableName).child(rp).child("price").getValue()).toString();
-                            String countP = Objects.requireNonNull(dataSnapshot.child(tableName).child(rp).child("count").getValue()).toString();
-                            String tax = Objects.requireNonNull(dataSnapshot.child(tableName).child(rp).child("tax").getValue()).toString();
+                            String price = Objects.requireNonNull(dataSnapshot.child(tableName).child("root").child(rp).child("price").getValue()).toString();
+                            String countP = Objects.requireNonNull(dataSnapshot.child(tableName).child("root").child(rp).child("count").getValue()).toString();
+                            String tax = Objects.requireNonNull(dataSnapshot.child(tableName).child("root").child(rp).child("tax").getValue()).toString();
 
                             if (countP.equals("")){
 
@@ -1342,7 +1342,7 @@ public class KotActivity extends AppCompatActivity implements
                                 map.put("price2", totalPrice);
                                 //map.put("price3", price3);
 
-                                mDatabase.child("uttam").child(tableName).child(rp).updateChildren(map);
+                                mDatabase.child("uttam").child(tableName).child("root").child(rp).updateChildren(map);
 
                             }else {
 
@@ -1364,7 +1364,7 @@ public class KotActivity extends AppCompatActivity implements
                                 map2.put("price2", totalPrice);
                                 //map2.put("price3", price3);
 
-                                mDatabase.child("uttam").child(tableName).child(rp).updateChildren(map2);
+                                mDatabase.child("uttam").child(tableName).child("root").child(rp).updateChildren(map2);
                             }
 
                         }else {
@@ -1390,8 +1390,8 @@ public class KotActivity extends AppCompatActivity implements
                                             //map3.put("price3", price3);
 
                                             Uttam upload = dataSnapshot.getValue(Uttam.class);
-                                            mDatabase.child("uttam").child(tableName).child(rp).setValue(upload);
-                                            mDatabase.child("uttam").child(tableName).child(rp).updateChildren(map3);
+                                            mDatabase.child("uttam").child(tableName).child("root").child(rp).setValue(upload);
+                                            mDatabase.child("uttam").child(tableName).child("root").child(rp).updateChildren(map3);
 
                                             nRecyclerView.smoothScrollToPosition(getItemCount);
 
@@ -1423,7 +1423,7 @@ public class KotActivity extends AppCompatActivity implements
 
 
 
-        mDatabase.child("uttam").child(tableName).child(rp)
+        mDatabase.child("uttam").child(tableName).child("root").child(rp)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -1445,7 +1445,7 @@ public class KotActivity extends AppCompatActivity implements
                                 @SuppressLint("DefaultLocale")
                                 String price3 = String.format("%.2f", p3);
 
-                                mDatabase.child("uttam").child(tableName).child(rp)
+                                mDatabase.child("uttam").child(tableName).child("root").child(rp)
                                         .child("price3").setValue(price3);
 
                             }else {
@@ -1461,7 +1461,7 @@ public class KotActivity extends AppCompatActivity implements
                                 @SuppressLint("DefaultLocale")
                                 String price3 = String.format("%.2f", p3);
 
-                                mDatabase.child("uttam").child(tableName).child(rp)
+                                mDatabase.child("uttam").child(tableName).child("root").child(rp)
                                         .child("price3").setValue(price3);
                             }
 
@@ -1516,7 +1516,7 @@ public class KotActivity extends AppCompatActivity implements
 
                 if (Objects.equals(strName, "1")){
 
-                    mDatabase.child("uttam").child(tableName).child(text)
+                    mDatabase.child("uttam").child(tableName).child("root").child(text)
                             .child("count").setValue("")
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -1526,7 +1526,7 @@ public class KotActivity extends AppCompatActivity implements
 
 
 
-                                        mDatabase.child("uttam").child(tableName).child(text)
+                                        mDatabase.child("uttam").child(tableName).child("root").child(text)
                                                 .addListenerForSingleValueEvent(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -1549,7 +1549,7 @@ public class KotActivity extends AppCompatActivity implements
                                                         map.put("price2", price2);
                                                         map.put("price3", price3);
 
-                                                        mDatabase.child("uttam").child(tableName).child(text)
+                                                        mDatabase.child("uttam").child(tableName).child("root").child(text)
                                                                 .updateChildren(map);
 
                                                     }
@@ -1570,7 +1570,7 @@ public class KotActivity extends AppCompatActivity implements
                             });
 
                 }else {
-                    mDatabase.child("uttam").child(tableName).child(text)
+                    mDatabase.child("uttam").child(tableName).child("root").child(text)
                             .child("count").setValue(strName)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -1578,7 +1578,7 @@ public class KotActivity extends AppCompatActivity implements
 
                                     if (task.isSuccessful()){
 
-                                     mDatabase.child("uttam").child(tableName).child(text)
+                                     mDatabase.child("uttam").child(tableName).child("root").child(text)
                                      .addListenerForSingleValueEvent(new ValueEventListener() {
                                          @Override
                                          public void onDataChange(DataSnapshot dataSnapshot) {
@@ -1604,7 +1604,7 @@ public class KotActivity extends AppCompatActivity implements
                                              map.put("price2", price2);
                                              map.put("price3", price3);
 
-                                             mDatabase.child("uttam").child(tableName).child(text)
+                                             mDatabase.child("uttam").child(tableName).child("root").child(text)
                                                       .updateChildren(map);
 
                                          }

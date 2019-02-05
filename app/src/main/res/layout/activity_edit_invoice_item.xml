@@ -36,11 +36,13 @@
        </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/edit_item_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <EditText
-                android:inputType="numberDecimal"
+                android:digits=".0123456789"
+                android:inputType="textFilter"
                 android:hint="Price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

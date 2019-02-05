@@ -41,13 +41,21 @@ public class KotAdapter extends RecyclerView.Adapter<KotAdapter.ImageViewHolder>
 
         String count = upload.getCount();
 
-        if (count.equals("")){
 
-            holder.textViewCount.setText("1 Each");
-        }else {
 
-            holder.textViewCount.setText(upload.getCount()+" Each");
-        }
+
+            if (count.equals("")){
+
+                holder.textViewCount.setText("1 Each");
+            }else {
+
+                holder.textViewCount.setText(upload.getCount()+" Each");
+            }
+
+
+
+
+
 
 
 

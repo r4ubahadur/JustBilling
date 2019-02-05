@@ -39,14 +39,20 @@ import java.util.Objects;
 import in.smi.ru.uttamlibrary.Uttam;
 
 
-public class FirstActivity extends AppCompatActivity implements TableAdapter.OnItemClickListener, TableAdapter.OnItemLongClickListener {
+public class FirstActivity extends AppCompatActivity implements
+        TableAdapter.OnItemClickListener,
+        TableAdapter.OnItemLongClickListener,
+        TableAdapter.ShareTable1,
+        TableAdapter.ShareTable2,
+        TableAdapter.ShareTable3,
+        TableAdapter.ShareTable4{
 
     Context context = this;
 
     List<String> waiterr = new ArrayList<>();
 
     private RecyclerView mRecyclerView;
-    private ProgressDialog mainProgressDialog;
+    private ProgressDialog mainProgressDialog, cProgressDialog;
     private List<Uttam> mUpload;
     private TableAdapter mAdapter;
     private FirebaseAuth mAuth;
@@ -61,6 +67,11 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
 
 
         mRecyclerView = findViewById(R.id.main_recycler_view);
+
+
+        cProgressDialog = new ProgressDialog(this);
+
+
 
         mainProgressDialog = new ProgressDialog(this);
         mainProgressDialog.setTitle("Please wait...");
@@ -151,11 +162,9 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
                     @Override
                     public void onClick(View view) {
 
-
                         alertDialog.dismiss();
 
                         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-
                         LayoutInflater inflater = FirstActivity.this.getLayoutInflater();
                         View dialogView = inflater.inflate(R.layout.waiter_list, null);
                         dialog.setView(dialogView);
@@ -174,9 +183,7 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
                                             String waiter = waiterSnapshot.child("name").getValue(String.class);
                                             waiterr.add(waiter);
                                         }
-
                                         ArrayAdapter<String> areasAdapter = new ArrayAdapter<>(FirstActivity.this, android.R.layout.simple_spinner_item, waiterr);
-
                                         waiter_list.setAdapter(areasAdapter);
                                     }
 
@@ -424,6 +431,71 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
                         if (putNumber.equals("Custom")){
 
 
+                            AlertDialog.Builder customBuilder = new AlertDialog.Builder(FirstActivity.this);
+                            LayoutInflater inflater = FirstActivity.this.getLayoutInflater();
+                            View dView = inflater.inflate(R.layout.table_custom_add, null);
+                            customBuilder.setView(dView);
+                            final AlertDialog cBuilder = customBuilder.create();
+                            cBuilder.setCanceledOnTouchOutside(false);
+
+
+                            final EditText enter_table_no = dView.findViewById(R.id.enter_table_no);
+                            TextView custom_ok_btn = dView.findViewById(R.id.custom_ok_btn);
+
+                            custom_ok_btn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                    String rp = enter_table_no.getText().toString();
+
+                                    final int putNo = Integer.parseInt(rp);
+
+                                    if (!rp.equals("")||putNo<71){
+
+
+
+
+                                        mDatabase.child("TotalTable")
+                                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                                        long count = dataSnapshot.getChildrenCount();
+                                                        Integer childNumber = (int)(long) count;
+                                                        if (!childNumber.equals(putNo)){
+
+                                                            one(childNumber, putNo);
+                                                            cBuilder.dismiss();
+
+
+                                                            cProgressDialog.setTitle("Please wait.....");
+                                                        //    cProgressDialog.setMessage();
+                                                            cProgressDialog.setCancelable(false);
+                                                            cProgressDialog.show();
+
+
+
+
+                                                        }else {
+                                                            cBuilder.dismiss();
+                                                        }
+                                                    }
+                                                    @Override
+                                                    public void onCancelled(DatabaseError databaseError) {
+
+                                                    }
+
+                                                });
+
+
+
+                                    }
+                                }
+                            });
+
+
+                            cBuilder.show();
+
+
                         }else {
                             Integer putNo = Integer.parseInt(putNumber);
 
@@ -475,11 +547,23 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
                         Integer childNo = (int) (long) count;
 
 
+
+                        cProgressDialog.setTitle("Please wait.....");
+                        cProgressDialog.setMessage(String.valueOf(childNo+"/"+String.valueOf(putNo)));
+                        cProgressDialog.setCancelable(false);
+                        cProgressDialog.show();
+
+
+
+
                         if (childNo < putNo ){
                             String key = mDatabase.push().getKey();
                             mDatabase.child("TotalTable").child(key).child("name").setValue(key);
                             mRecyclerView.smoothScrollToPosition(itemCount);
                             three(childNumber, putNo);
+                        }else {
+                            cProgressDialog.dismiss();
+
                         }
 
                     }
@@ -663,6 +747,38 @@ public class FirstActivity extends AppCompatActivity implements TableAdapter.OnI
 
 
 
+
+    }
+
+
+
+    @Override
+    public void share_Table1(String tableNo1, String wName) {
+
+
+        if (!wName.equals("")){
+
+            Toast.makeText(FirstActivity.this, tableNo1+" "+wName, Toast.LENGTH_SHORT).show();
+
+        }
+
+
+
+    }
+
+
+    @Override
+    public void share_Table2(String tableNo2, String wName) {
+
+    }
+
+    @Override
+    public void share_Table3(String tableNo3, String wName) {
+
+    }
+
+    @Override
+    public void share_Table4(String tableNo4, String wName) {
 
     }
 }
